@@ -10,11 +10,15 @@
 import UIKit
 
 class ViewController: UIViewController {
-
     
-    lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count % 2 == 0 ? cardButtons.count / 2 : (cardButtons.count / 2) + 1))
+    var game: Concentration! {
+        didSet {
+            updateUI()
+        }
+    }
     
-    var emojiChoice = ["🤐", "😵‍💫", "🤢", "🤮", "🤧", "😷", "👺", "💩"]
+//    var emojiChoice = ["🤐", "😵‍💫", "🤢", "🤮", "🤧", "😷", "👺", "💩"]
+    var emojiChoice = EmojiCollection.returnEmojiSet(for: Theme.halloween)
     var emoji = [Int: String]()
     
     // 위 hash 와 같은 이름을 갖는 함수지만 상관없다
@@ -58,14 +62,22 @@ class ViewController: UIViewController {
         }
         updateUI()
     }
+    
     @IBAction func touchNewGameButton(_ sender: UIButton) {
+        emojiChoice = EmojiCollection.returnRandomEmojiSet()
+        game = Concentration(numberOfPairsOfCards: cardButtons.count / 2)
     }
     
     // MARK: - View LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let numberOfButtons = cardButtons.count
+        game = Concentration(numberOfPairsOfCards: (numberOfButtons % 2 == 0 ? numberOfButtons / 2 : (numberOfButtons / 2) + 1))
+        
         newGameButton.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
+        
         for idx in cardButtons.indices {
             let button = cardButtons[idx]
             button.layer.cornerRadius = 10
@@ -73,5 +85,9 @@ class ViewController: UIViewController {
         }
         
     }
+    
+
+    
 }
+
 

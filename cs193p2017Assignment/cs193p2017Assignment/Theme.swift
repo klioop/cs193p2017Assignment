@@ -11,9 +11,15 @@ enum Theme: String {
     case face
     case halloween
     case construction
+}
+
+struct EmojiCollection {
+    static var faceEmojis = ["🤐", "😵‍💫", "🤢", "🤮", "🤧", "😷", "👺", "🤑"]
+    static var hallowinEmojis = ["👻", "👺", "👽", "💀", "☠️", "👹", "🎃"]
+    static var constructionEmojis = ["👷🏻‍♀️", "🧱", "🪓", "🔧", "🔨", "🔩", "⛏", "🚜", "🛠"]
     
-    func returnEmojiSet() -> [String] {
-        switch self {
+    static func returnEmojiSet(for theme: Theme) -> [String] {
+        switch theme {
         case .face:
             return EmojiCollection.faceEmojis
         case .halloween:
@@ -22,10 +28,12 @@ enum Theme: String {
             return EmojiCollection.constructionEmojis
         }
     }
-}
-
-struct EmojiCollection {
-    static var faceEmojis = ["🤐", "😵‍💫", "🤢", "🤮", "🤧", "😷", "👺", "🤑"]
-    static var hallowinEmojis = ["👻", "👺", "👽", "💀", "☠️", "👹", "🎃"]
-    static var constructionEmojis = ["👷🏻‍♀️", "🧱", "🪓", "🔧", "🔨", "🔩", "⛏", "🚜", "🛠"]
+    
+    static func returnRandomEmojiSet() -> [String]{
+        let themes = [Theme.face, Theme.halloween, Theme.construction]
+        let themeChosen = themes.randomElement() ?? Theme.face
+        
+        return returnEmojiSet(for: themeChosen)
+    }
+    
 }
