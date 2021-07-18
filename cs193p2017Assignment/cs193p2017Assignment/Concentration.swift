@@ -11,7 +11,10 @@ import Foundation
 class Concentration {
     
     var cards = [Card]()
-    var indexOfOneAndOnlyOneFaceUp: Int?
+    var indexOfOneAndOnlyOneFaceUp: Int? {
+        get { cards.indices.filter({ cards[$0].isFaceUp }).oneAndOnlyOne }
+        set { cards.indices.forEach{ cards[$0].isFaceUp = ($0 == newValue)} }
+    }
     
     func touchCard(at cardNumber: Int) {
         if !cards[cardNumber].isMatched {
@@ -20,14 +23,13 @@ class Concentration {
                     cards[potentialMatch].isMatched = true
                     cards[cardNumber].isMatched = true
                 }
-                indexOfOneAndOnlyOneFaceUp = nil
                 cards[cardNumber].isFaceUp = true
             } else {
                 indexOfOneAndOnlyOneFaceUp = cardNumber
-                for idx in cards.indices {
-                    cards[idx].isFaceUp = false
-                }
-                cards[cardNumber].isFaceUp = true
+//                for idx in cards.indices {
+//                    cards[idx].isFaceUp = false
+//                }
+//                cards[cardNumber].isFaceUp = true
             }
         }
     }
@@ -39,5 +41,15 @@ class Concentration {
         }
         
         cards.shuffle()
+    }
+}
+
+extension Array {
+    var oneAndOnlyOne: Element? {
+        if self.count == 1 {
+            return self.first
+        } else {
+            return nil
+        }
     }
 }

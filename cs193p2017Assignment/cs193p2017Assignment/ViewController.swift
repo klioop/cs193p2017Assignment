@@ -56,6 +56,7 @@ class ViewController: UIViewController {
     
     
     // MARK: - IBAction
+    
     @IBAction func touchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.firstIndex(of: sender) {
             game.touchCard(at: cardNumber)
@@ -85,8 +86,6 @@ class ViewController: UIViewController {
         }
         
     }
-    
-
     
 }
 
