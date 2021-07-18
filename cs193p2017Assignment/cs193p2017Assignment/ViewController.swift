@@ -33,6 +33,8 @@ class ViewController: UIViewController {
     }
     
     func updateUI() {
+        scoreLabel.text = "Score: \(game.score)"
+        
         for idx in cardButtons.indices {
             let button = cardButtons[idx]
             let card = game.cards[idx]
@@ -53,6 +55,7 @@ class ViewController: UIViewController {
     // MARK: - IBOutlets
     @IBOutlet var cardButtons: [UIButton]!
     @IBOutlet weak var newGameButton: UIButton!
+    @IBOutlet weak var scoreLabel: UILabel!
     
     
     // MARK: - IBAction
@@ -77,7 +80,9 @@ class ViewController: UIViewController {
         let numberOfButtons = cardButtons.count
         game = Concentration(numberOfPairsOfCards: (numberOfButtons % 2 == 0 ? numberOfButtons / 2 : (numberOfButtons / 2) + 1))
         
-        newGameButton.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
+        newGameButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration.init(pointSize: 25), forImageIn: UIControl.State.normal)
+//        newGameButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration.init(pointSize: 10), forImageIn: UIControl.State.highlighted)
+        
         
         for idx in cardButtons.indices {
             let button = cardButtons[idx]
