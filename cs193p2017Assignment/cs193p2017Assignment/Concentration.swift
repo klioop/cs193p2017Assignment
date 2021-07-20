@@ -18,9 +18,11 @@ class Concentration {
     var score = 0
     
     func touchCard(at cardNumber: Int) {
+        assert(cards.indices.contains(cardNumber), "Concentraition.touchCard(\(cardNumber)): cards does not the card at the \(cardNumber) ")
+        
         if !cards[cardNumber].isMatched {
             if let potentialMatch = indexOfOneAndOnlyOneFaceUp, !cards[cardNumber].isFaceUp {
-                if cards[potentialMatch].identifier == cards[cardNumber].identifier {
+                if cards[potentialMatch] == cards[cardNumber] {
                     cards[potentialMatch].isMatched = true
                     cards[cardNumber].isMatched = true
                     
@@ -49,6 +51,8 @@ class Concentration {
     }
     
     init(numberOfPairsOfCards: Int) {
+        assert(numberOfPairsOfCards > 0, "Concentration.init(\(numberOfPairsOfCards)): You must have at least one pair of cards")
+        
         for _ in 1...numberOfPairsOfCards {
             let card = Card()
             cards += [card, card]

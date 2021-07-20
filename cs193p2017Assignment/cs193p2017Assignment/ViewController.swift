@@ -19,20 +19,30 @@ class ViewController: UIViewController {
     
 //    var emojiChoice = ["🤐", "😵‍💫", "🤢", "🤮", "🤧", "😷", "👺", "💩"]
     var emojiChoice = EmojiCollection.returnEmojiSet(for: Theme.halloween)
-    var emoji = [Int: String]()
+    var emoji = [Card: String]()
+    var flipCount: Int = 0
     
     // 위 hash 와 같은 이름을 갖는 함수지만 상관없다
     // swift 의 함수는 external parmeter name 을 갖기 때문에 함수의 인자가 있을 경우 쉽게 구별가능
     func emoji(for card: Card) -> String {
-        if emoji[card.identifier] == nil {
+        if emoji[card] == nil {
             let randomIdx = Int.random(in: emojiChoice.indices)
-            emoji[card.identifier] = emojiChoice.remove(at: randomIdx)
+            emoji[card] = emojiChoice.remove(at: randomIdx)
         }
         
-        return emoji[card.identifier] ?? "?"
+        return emoji[card] ?? "?"
     }
     
-    func updateUI() {
+    private func updateFlipCount() {
+        let attributes: [NSAttributedString.Key: Any] = [
+            .strokeWidth: 0.5,
+            .strokeColor: #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+        ]
+        let attributedString = NSAttributedString(string: "Flips: \(flipCount)", attributes: attributes)
+        flipCountLabel.attributedText = attributedString
+    }
+    
+    private func updateUI() {
         scoreLabel.text = "Score: \(game.score)"
         
         for idx in cardButtons.indices {
@@ -53,9 +63,10 @@ class ViewController: UIViewController {
     }
     
     // MARK: - IBOutlets
-    @IBOutlet var cardButtons: [UIButton]!
-    @IBOutlet weak var newGameButton: UIButton!
-    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet private var cardButtons: [UIButton]!
+    @IBOutlet private weak var newGameButton: UIButton!
+    @IBOutlet private weak var scoreLabel: UILabel!
+    @IBOutlet private weak var flipCountLabel: UILabel!
     
     
     // MARK: - IBAction
