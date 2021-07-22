@@ -11,48 +11,55 @@ struct SetEngine {
     
     private var deck = [Card]()
     var cardsOnTable = Array<Card>()
-    var selectedCards: [Card]?
+    var selectedCardIndices = [Int]()
+    var score = 0
     
     mutating func touchCard(at cardNumber: Int) {
-        let chosenCard = cardsOnTable[cardNumber]
-        if !chosenCard.isMatched && !chosenCard.isSelected{
-            
-            guard var cardsInvolved = selectedCards else {
-                selectedCards = [chosenCard]
-                return
-            }
-            
-            if cardsInvolved.count == 1 {
-                selectedCards?.append(chosenCard)
-            } else if cardsInvolved.count == 2 {
-                cardsInvolved.append(chosenCard)
+        
+        if !cardsOnTable[cardNumber].isMatched && !cardsOnTable[cardNumber].isSelected {
+            cardsOnTable[cardNumber].isSelected = true
+
+            if selectedCardIndices.count == 0 {
+                selectedCardIndices += [cardNumber]
+            } else if selectedCardIndices.count == 1 {
+                selectedCardIndices.append(cardNumber)
+            } else if selectedCardIndices.count == 2 {
+                selectedCardIndices.append(cardNumber)
+                print(selectedCardIndices)
                 
-                if isSet(for: cardsInvolved) {
-                    
-                    for index in cardsInvolved.indices {
-                        cardsInvolved[index].isMatched = true
-                        
-                        cardsOnTable = cardsOnTable.map{ cardOnTable -> Card in
-                            if cardOnTable.identifier == cardsInvolved[index].identifier {
-                                let randomIdx = Int.random(in: 0..<deck.count)
-                                return deck.remove(at: randomIdx)
-                            } else {
-                                return cardOnTable
-                            }
-                        }
+                if isSet(for: selectedCardIndices) {
+                    selectedCardIndices.forEach {
+                        cardsOnTable[$0].isMatched = true
+                        let randomIdx = Int.random(in: 0..<deck.count)
+                        cardsOnTable[$0] = deck.remove(at: randomIdx)
                     }
+                    score += 3
                 } else {
-                    _ = cardsInvolved.indices.map{ cardsInvolved[$0].isSelected = false }
+                    selectedCardIndices.forEach { cardsOnTable[$0].isSelected = false}
                 }
                 
-                selectedCards = nil
+                selectedCardIndices = []
             }
         }
+        
     }
     
     // return true if the selected cards of three form set
-    func isSet(for cards: [Card]) -> Bool {
-        return true
+    private func isSet(for indicies: [Int]) -> Bool {
+        var selectedCards = [Card]()
+        indicies.forEach { selectedCards.append(cardsOnTable[$0]) }
+        selectedCards.forEach{ print( "id: \($0.identifier)" )}
+        
+        let color = Set(selectedCards.map{ $0.color }).count
+        let shape = Set(selectedCards.map{ $0.shape }).count
+        let number = Set(selectedCards.map{ $0.number }).count
+        let shade = Set(selectedCards.map{ $0.shade }).count
+        
+        print("color: \(color), shape: \(shape), shade: \(shade), number: \(number)")
+        
+        let result = color != 2 && shape != 2 && number != 2 && shade != 2
+        
+        return result
     }
     
     init(numberOfCards: Int = 81) {
@@ -74,7 +81,7 @@ struct SetEngine {
         
         deck.shuffle()
         
-        for _ in 0..<12 {
+        for _ in 0..<24 {
             let randomIdx = Int.random(in: 0..<deck.count)
             cardsOnTable.append(deck[randomIdx])
             deck.remove(at: randomIdx)

@@ -36,13 +36,13 @@ struct Card {
     }
 }
 
-enum Color: String {
+enum Color {
     case green, red, purple
     
     func returnColor() -> UIColor {
         switch self {
         case .green:
-            return #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1)
+            return #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1)
         case .red:
             return #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         case .purple:
@@ -51,12 +51,48 @@ enum Color: String {
     }
 }
 
+extension Color: Equatable {
+    static func == (lhs: Color, rhs: Color) -> Bool {
+        return lhs.returnColor() == rhs.returnColor()
+    }
+}
+
 enum Shape {
     case circle, triangle, rectangle
+    
+    func returnShape() -> String {
+        let shapes = ["●", "▲", "■"]
+        
+        switch self {
+        case .circle:
+            return shapes[0]
+        case .triangle:
+            return shapes[1]
+        case .rectangle:
+            return shapes[2]
+        }
+    }
+}
+
+extension Shape: Equatable {
+    static func == (lhs: Shape, rhs: Shape) -> Bool {
+        return lhs.returnShape() == rhs.returnShape()
+    }
 }
 
 enum Shade {
     case fill, open, stripped
+    
+    func returnShade() -> CGFloat {
+        switch self {
+        case .fill:
+            return 1.0
+        case .open:
+            return 0.5
+        case .stripped:
+            return 0.15
+        }
+    }
 }
 
 enum Number {

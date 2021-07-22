@@ -97,6 +97,7 @@ class ViewController: UIViewController {
         
         for idx in cardButtons.indices {
             let button = cardButtons[idx]
+
             button.layer.cornerRadius = 10
             button.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
         }
