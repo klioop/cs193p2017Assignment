@@ -23,14 +23,15 @@ class ViewController: UIViewController {
         case .one:
             result = "\(shape)"
         case .two:
-            result = "\(shape)\(shape)"
+            result = "\(shape)\n\(shape)"
         case .three:
-            result = "\(shape)\(shape)\(shape)"
+            result = "\(shape)\n\(shape)\n\(shape)"
         }
         
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: color.withAlphaComponent(shade),
-            .strokeColor: #colorLiteral(red: 0.3098039329, green: 0.01568627544, blue: 0.1294117719, alpha: 1)
+            .strokeColor: color,
+            .strokeWidth: -3
         ]
         let attributedString = NSAttributedString(string: result, attributes: attributes)
         
@@ -38,23 +39,30 @@ class ViewController: UIViewController {
     }
     
     func updateUI() {
-        cardButtons.indices.forEach{
+        guard let numberOfCardsOnTable = engine?.cardsOnTable.count else { return }
+        
+        engine?.cardsOnTable.indices.forEach{
             
             let button = cardButtons[$0]
             guard let card = engine?.cardsOnTable[$0] else { return }
             
             button.backgroundColor = nil
-//            button.setTitle(buttonTitle(of: card), for: UIControl.State.normal)
-//            button.setTitleColor(card.color.returnColor(), for: UIControl.State.normal)
             button.setAttributedTitle(buttonTitle(of: card), for: UIControl.State.normal)
             
             button.layer.cornerRadius = 10
             button.layer.borderWidth = card.isSelected ? 3 : 0
             button.layer.borderColor = card.isSelected ? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1) : #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             
-            let fontSelected = UIFont.systemFont(ofSize: 40.0)
-            let fontNormal = UIFont.systemFont(ofSize: 25)
+            let fontSelected = UIFont.systemFont(ofSize: 20.0)
+            let fontNormal = UIFont.systemFont(ofSize: 25.0)
             button.titleLabel?.font = card.isSelected ? fontSelected : fontNormal
+        }
+        
+        (numberOfCardsOnTable..<cardButtons.count).forEach {
+            let button = cardButtons[$0]
+            button.isEnabled = false
+            button.setTitle("", for: UIControl.State.disabled)
+            button.backgroundColor = nil
         }
         
         scoreLabel.text = "Score: \(engine!.score)"

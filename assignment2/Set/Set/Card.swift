@@ -51,12 +51,6 @@ enum Color {
     }
 }
 
-extension Color: Equatable {
-    static func == (lhs: Color, rhs: Color) -> Bool {
-        return lhs.returnColor() == rhs.returnColor()
-    }
-}
-
 enum Shape {
     case circle, triangle, rectangle
     
@@ -74,12 +68,6 @@ enum Shape {
     }
 }
 
-extension Shape: Equatable {
-    static func == (lhs: Shape, rhs: Shape) -> Bool {
-        return lhs.returnShape() == rhs.returnShape()
-    }
-}
-
 enum Shade {
     case fill, open, stripped
     
@@ -88,7 +76,7 @@ enum Shade {
         case .fill:
             return 1.0
         case .open:
-            return 0.5
+            return 0.0
         case .stripped:
             return 0.15
         }
@@ -99,3 +87,14 @@ enum Number {
     case one, two, three
 }
 
+extension Color: Equatable {
+    static func == (lhs: Color, rhs: Color) -> Bool {
+        return lhs.returnColor() == rhs.returnColor()
+    }
+}
+
+extension Shape: Equatable {
+    static func == (lhs: Shape, rhs: Shape) -> Bool {
+        return lhs.returnShape() == rhs.returnShape()
+    }
+}

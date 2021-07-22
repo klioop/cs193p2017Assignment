@@ -23,7 +23,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="icI-MQ-Q8T">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="72"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MpO-TB-EwI">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="MpO-TB-EwI">
                                                 <rect key="frame" x="0.0" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -31,7 +31,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CHE-5c-Jlm"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="str-rv-ANg">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="str-rv-ANg">
                                                 <rect key="frame" x="95.5" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -39,7 +39,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MMe-ET-B9f"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VDQ-su-9yS">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="VDQ-su-9yS">
                                                 <rect key="frame" x="191" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -47,7 +47,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2w6-Dz-Q1W"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bAi-l5-BcD">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="bAi-l5-BcD">
                                                 <rect key="frame" x="286.5" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -61,7 +61,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="iGV-uh-7Ip">
                                         <rect key="frame" x="0.0" y="80" width="374" height="72"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Vg-mu-aRA">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="4Vg-mu-aRA">
                                                 <rect key="frame" x="0.0" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -69,7 +69,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ief-kc-7gx"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tGi-0h-h8E">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="tGi-0h-h8E">
                                                 <rect key="frame" x="95.5" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -77,7 +77,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oah-tZ-Hip"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m93-91-rNV">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="m93-91-rNV">
                                                 <rect key="frame" x="191" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -85,7 +85,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tuM-WE-J5W"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NAV-1O-nhP">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="NAV-1O-nhP">
                                                 <rect key="frame" x="286.5" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -98,7 +98,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="aDx-eN-Aic">
                                         <rect key="frame" x="0.0" y="160" width="374" height="72"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JWw-08-hqu">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="JWw-08-hqu">
                                                 <rect key="frame" x="0.0" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -106,7 +106,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zUI-b6-edj"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eTo-wv-s4J">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="eTo-wv-s4J">
                                                 <rect key="frame" x="95.5" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -114,7 +114,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Yme-hJ-KhY"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agr-1K-hIs">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Agr-1K-hIs">
                                                 <rect key="frame" x="191" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -122,7 +122,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bC4-cD-eA5"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FbE-Aw-4j5">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="FbE-Aw-4j5">
                                                 <rect key="frame" x="286.5" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -135,7 +135,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jXY-Vb-u0M">
                                         <rect key="frame" x="0.0" y="240" width="374" height="72"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QOk-EZ-GEP">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="QOk-EZ-GEP">
                                                 <rect key="frame" x="0.0" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -143,7 +143,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZhP-8X-uOM"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P8u-Q3-Esu">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="P8u-Q3-Esu">
                                                 <rect key="frame" x="95.5" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -151,7 +151,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vp6-yK-0Rp"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FVs-7L-FOU">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="FVs-7L-FOU">
                                                 <rect key="frame" x="191" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -159,7 +159,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Dkn-bb-PJ4"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p2i-Tf-I8v">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="p2i-Tf-I8v">
                                                 <rect key="frame" x="286.5" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -172,7 +172,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="A2X-sE-npu">
                                         <rect key="frame" x="0.0" y="320" width="374" height="72"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TC7-5Z-6kI">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="TC7-5Z-6kI">
                                                 <rect key="frame" x="0.0" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -180,7 +180,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="DS2-V8-hLN"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="17r-IG-fMa">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="17r-IG-fMa">
                                                 <rect key="frame" x="95.5" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -188,7 +188,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xcD-Sd-cl6"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sWe-8K-JoR">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="sWe-8K-JoR">
                                                 <rect key="frame" x="191" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -196,7 +196,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vqe-ok-JHe"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hF8-Be-dle">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="hF8-Be-dle">
                                                 <rect key="frame" x="286.5" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -209,7 +209,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="gH0-dX-f1K">
                                         <rect key="frame" x="0.0" y="400" width="374" height="72"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3P3-6P-S3J">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="3P3-6P-S3J">
                                                 <rect key="frame" x="0.0" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -217,7 +217,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="X4n-5N-DVV"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mcx-b9-vgQ">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="mcx-b9-vgQ">
                                                 <rect key="frame" x="95.5" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -225,7 +225,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="usU-bC-67l"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y1E-2w-zBK">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="y1E-2w-zBK">
                                                 <rect key="frame" x="191" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -233,7 +233,7 @@
                                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6te-Nf-ahK"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ti8-fH-ztT">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Ti8-fH-ztT">
                                                 <rect key="frame" x="286.5" y="0.0" width="87.5" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
