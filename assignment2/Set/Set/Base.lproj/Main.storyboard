@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Ihx-FV-QvE">
-                                <rect key="frame" x="20" y="105" width="374" height="472"/>
+                                <rect key="frame" x="20" y="98" width="374" height="472"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="icI-MQ-Q8T">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="72"/>
@@ -266,20 +266,44 @@
                                     </button>
                                 </subviews>
                             </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="197" translatesAutoresizingMaskIntoConstraints="NO" id="Ant-u4-yrg">
+                                <rect key="frame" x="20" y="817" width="374" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IdI-ko-kWd">
+                                        <rect key="frame" x="0.0" y="0.0" width="88.5" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="py0-yw-uoI">
+                                        <rect key="frame" x="285.5" y="0.0" width="88.5" height="30"/>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="touchDeal:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bG7-uu-voR"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="UkK-H8-NGh" secondAttribute="trailing" constant="20.5" id="2XA-Yo-FDC"/>
+                            <constraint firstItem="Ant-u4-yrg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="7Bd-Wk-hmi"/>
                             <constraint firstItem="UkK-H8-NGh" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="BPY-aj-DuN"/>
+                            <constraint firstItem="Ihx-FV-QvE" firstAttribute="top" secondItem="UkK-H8-NGh" secondAttribute="bottom" constant="30" id="Lgh-Hd-MMX"/>
+                            <constraint firstItem="Ant-u4-yrg" firstAttribute="top" relation="lessThanOrEqual" secondItem="Ihx-FV-QvE" secondAttribute="bottom" constant="247" id="ZRh-U4-YUm"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Ihx-FV-QvE" secondAttribute="trailing" constant="20" id="Zfn-YC-xpU"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Ant-u4-yrg" secondAttribute="bottom" constant="15" id="bya-ZL-nXM"/>
                             <constraint firstItem="UkK-H8-NGh" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="caJ-Qf-EdP"/>
-                            <constraint firstItem="Ihx-FV-QvE" firstAttribute="top" secondItem="UkK-H8-NGh" secondAttribute="bottom" constant="37" id="hGk-dE-eMH"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Ant-u4-yrg" secondAttribute="trailing" constant="20" id="m29-uX-ajg"/>
                             <constraint firstItem="Ihx-FV-QvE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="yQN-n6-LdG"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="deal3CardsButton" destination="py0-yw-uoI" id="17d-iX-0gB"/>
                         <outlet property="newGameButton" destination="4V4-Xd-lDO" id="Mjp-t1-HhT"/>
+                        <outlet property="numOfCardsOnDeckLabel" destination="IdI-ko-kWd" id="B25-24-8yH"/>
                         <outlet property="scoreLabel" destination="cLh-aS-05U" id="74v-ui-0l4"/>
                         <outletCollection property="cardButtons" destination="bAi-l5-BcD" collectionClass="NSMutableArray" id="phK-eh-pk7"/>
                         <outletCollection property="cardButtons" destination="VDQ-su-9yS" collectionClass="NSMutableArray" id="a3n-7t-uOY"/>

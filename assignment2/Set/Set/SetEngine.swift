@@ -13,6 +13,18 @@ struct SetEngine {
     var cardsOnTable = Array<Card>()
     var selectedCardIndices = [Int]()
     var score = 0
+    var remaingCardOnDeck: Int? {
+        get { deck.count }
+    }
+    
+    mutating func dealThreeCard() {
+        if cardsOnTable.count < 24 {
+            for _ in 0..<3 {
+                let randomIdx = Int.random(in: 0..<deck.count)
+                cardsOnTable.append(deck.remove(at: randomIdx))
+            }
+        }
+    }
     
     mutating func touchCard(at cardNumber: Int) {
         
@@ -48,14 +60,11 @@ struct SetEngine {
     private func isSet(for indicies: [Int]) -> Bool {
         var selectedCards = [Card]()
         indicies.forEach { selectedCards.append(cardsOnTable[$0]) }
-        selectedCards.forEach{ print( "id: \($0.identifier)" )}
         
         let color = Set(selectedCards.map{ $0.color }).count
         let shape = Set(selectedCards.map{ $0.shape }).count
         let number = Set(selectedCards.map{ $0.number }).count
         let shade = Set(selectedCards.map{ $0.shade }).count
-        
-        print("color: \(color), shape: \(shape), shade: \(shade), number: \(number)")
         
         let result = color != 2 && shape != 2 && number != 2 && shade != 2
         
@@ -86,5 +95,6 @@ struct SetEngine {
             cardsOnTable.append(deck[randomIdx])
             deck.remove(at: randomIdx)
         }
+        
     }
 }

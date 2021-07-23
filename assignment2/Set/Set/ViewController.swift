@@ -10,10 +10,12 @@ import UIKit
 class ViewController: UIViewController {
     
     var engine: SetEngine? {
-        didSet { updateUI() }
+        didSet {
+            updateUI()
+        }
     }
     
-    func buttonTitle(of card: Card) -> NSAttributedString{
+    func buttonTitle(of card: Card) -> NSAttributedString {
         var result = ""
         let shape = card.shape.returnShape()
         let color = card.color.returnColor()
@@ -41,11 +43,22 @@ class ViewController: UIViewController {
     func updateUI() {
         guard let numberOfCardsOnTable = engine?.cardsOnTable.count else { return }
         
+        (numberOfCardsOnTable..<cardButtons.count).forEach {
+            let button = cardButtons[$0]
+            button.setTitle("", for : UIControl.State.normal)
+            print(button.title(for: .normal)!)
+            button.backgroundColor = nil
+            button.isEnabled = false
+            button.isHidden = true
+        }
+        
         engine?.cardsOnTable.indices.forEach{
             
             let button = cardButtons[$0]
             guard let card = engine?.cardsOnTable[$0] else { return }
             
+            button.isEnabled = true
+            button.isHidden = false
             button.backgroundColor = nil
             button.setAttributedTitle(buttonTitle(of: card), for: UIControl.State.normal)
             
@@ -58,14 +71,11 @@ class ViewController: UIViewController {
             button.titleLabel?.font = card.isSelected ? fontSelected : fontNormal
         }
         
-        (numberOfCardsOnTable..<cardButtons.count).forEach {
-            let button = cardButtons[$0]
-            button.isEnabled = false
-            button.setTitle("", for: UIControl.State.disabled)
-            button.backgroundColor = nil
-        }
+        
         
         scoreLabel.text = "Score: \(engine!.score)"
+        deal3CardsButton.setTitle("Deal 3 Cards", for: .normal)
+        numOfCardsOnDeckLabel.text = "Deck: \(engine?.remaingCardOnDeck ?? 0)"
     }
     
     // MARK: - Outlets
@@ -73,6 +83,8 @@ class ViewController: UIViewController {
     @IBOutlet var cardButtons: [UIButton]!
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var newGameButton: UIButton!
+    @IBOutlet weak var numOfCardsOnDeckLabel: UILabel!
+    @IBOutlet weak var deal3CardsButton: UIButton!
     
     // MARK: - IBActions
     
@@ -84,6 +96,12 @@ class ViewController: UIViewController {
     }
     
     @IBAction func touchNewGame(_ sender: UIButton) {
+        engine = SetEngine()
+    }
+   
+    @IBAction func touchDeal(_ sender: UIButton) {
+        engine?.dealThreeCard()
+        updateUI()
     }
     
     // MARK: - View life cycle
