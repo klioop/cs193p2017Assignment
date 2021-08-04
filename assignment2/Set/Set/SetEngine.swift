@@ -37,7 +37,6 @@ struct SetEngine {
                 selectedCardIndices.append(cardNumber)
             } else if selectedCardIndices.count == 2 {
                 selectedCardIndices.append(cardNumber)
-                print(selectedCardIndices)
                 
                 if isSet(for: selectedCardIndices) {
                     selectedCardIndices.forEach {
@@ -74,7 +73,7 @@ struct SetEngine {
     init(numberOfCards: Int = 81) {
         
         let colors: [Color] = [.green, .purple, .red]
-        let shapes: [Shape] = [.circle, .rectangle, .triangle]
+        let shapes: [Shape] = [.oval, .squiggle, .diamond]
         let shades: [Shade] = [.fill, .open, .stripped]
         let numbers: [Number] = [.one, .two, .three]
         

@@ -66,12 +66,10 @@ class ViewController: UIViewController {
             button.layer.borderWidth = card.isSelected ? 3 : 0
             button.layer.borderColor = card.isSelected ? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1) : #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             
-            let fontSelected = UIFont.systemFont(ofSize: 20.0)
-            let fontNormal = UIFont.systemFont(ofSize: 25.0)
-            button.titleLabel?.font = card.isSelected ? fontSelected : fontNormal
+            let fontSizeSelected = UIFont.systemFont(ofSize: 20.0)
+            let fontSizeNormal = UIFont.systemFont(ofSize: 25.0)
+            button.titleLabel?.font = card.isSelected ? fontSizeSelected : fontSizeNormal
         }
-        
-        
         
         scoreLabel.text = "Score: \(engine!.score)"
         deal3CardsButton.setTitle("Deal 3 Cards", for: .normal)
@@ -108,7 +106,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         engine = SetEngine()
     }
 }

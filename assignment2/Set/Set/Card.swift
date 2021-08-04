@@ -51,24 +51,24 @@ enum Color {
     }
 }
 
-enum Shape {
-    case circle, triangle, rectangle
+enum Shape: String {
+    case oval, diamond, squiggle
     
     func returnShape() -> String {
         let shapes = ["●", "▲", "■"]
         
         switch self {
-        case .circle:
+        case .oval:
             return shapes[0]
-        case .triangle:
+        case .diamond:
             return shapes[1]
-        case .rectangle:
+        case .squiggle:
             return shapes[2]
         }
     }
 }
 
-enum Shade {
+enum Shade: String {
     case fill, open, stripped
     
     func returnShade() -> CGFloat {

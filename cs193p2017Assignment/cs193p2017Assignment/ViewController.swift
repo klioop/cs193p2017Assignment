@@ -88,6 +88,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(view.contentScaleFactor)
+        
         let numberOfButtons = cardButtons.count
         game = Concentration(numberOfPairsOfCards: (numberOfButtons % 2 == 0 ? numberOfButtons / 2 : (numberOfButtons / 2) + 1))
         
