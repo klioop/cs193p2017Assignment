@@ -9,10 +9,10 @@ import UIKit
 
 class SetCardView: UIView {
     
-    var number: CGFloat = 3
-    var shape: Shape = .diamond
-    var shade: Shade = .fill
-    var color: Color = .red
+    var number: CGFloat = 3 { didSet { setNeedsDisplay() }}
+    var shape: Shape = .diamond { didSet { setNeedsDisplay() }}
+    var shade: Shade = .fill { didSet { setNeedsDisplay() }}
+    var color: Color = .red { didSet { setNeedsDisplay() }}
     
     var shapeScaleSmall = SizeRatio.shapeRectSmallRatioToPerRowRect {
         didSet {
@@ -26,6 +26,7 @@ class SetCardView: UIView {
     }
     
     override func draw(_ rect: CGRect) {
+        
         drawShape(shape: shape, shade: shade, color: color)
     }
     
@@ -60,7 +61,7 @@ class SetCardView: UIView {
         }
     }
     
-    // MARK: - draw shapes related functions
+    // MARK: - functions related to drawing shapes
     
     private func determineAndDrawShape (in rect: CGRect,
                                 for shape: Shape,
@@ -200,6 +201,7 @@ class SetCardView: UIView {
     }
     
     required init?(coder: NSCoder) {
+        super.init(coder: coder)
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -216,7 +218,7 @@ extension SetCardView {
     }
     
     var numberOfStripe: CGFloat {
-        40
+        20
     }
     
     var shapePerRow: CGFloat {

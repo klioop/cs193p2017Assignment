@@ -89,7 +89,7 @@ struct SetEngine {
         
         deck.shuffle()
         
-        for _ in 0..<12 {
+        for _ in 0..<10 {
             let randomIdx = Int.random(in: 0..<deck.count)
             cardsOnTable.append(deck[randomIdx])
             deck.remove(at: randomIdx)
