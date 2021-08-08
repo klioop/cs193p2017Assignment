@@ -181,6 +181,11 @@ class SetCardView: UIView {
         context.restoreGState()
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        setNeedsLayout()
+        setNeedsDisplay()
+    }
+    
     // MARK: - init
     
     init(number: Number = .three,

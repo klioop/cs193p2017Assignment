@@ -14,11 +14,17 @@ struct SetEngine {
     var selectedCardIndices = [Int]()
     var score = 0
     var remaingCardOnDeck: Int? {
-        get { deck.count }
+        get {
+            if deck.count < 0 {
+                return nil
+            } else {
+                return deck.count
+            }
+        }
     }
     
     mutating func dealThreeCard() {
-        if cardsOnTable.count < 24 {
+        if deck.count > 0 {
             for _ in 0..<3 {
                 let randomIdx = Int.random(in: 0..<deck.count)
                 cardsOnTable.append(deck.remove(at: randomIdx))
@@ -89,10 +95,9 @@ struct SetEngine {
         
         deck.shuffle()
         
-        for _ in 0..<10 {
+        for _ in 1..<10 {
             let randomIdx = Int.random(in: 0..<deck.count)
-            cardsOnTable.append(deck[randomIdx])
-            deck.remove(at: randomIdx)
+            cardsOnTable.append(deck.remove(at: randomIdx))
         }
         
     }
