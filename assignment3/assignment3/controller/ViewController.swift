@@ -35,6 +35,9 @@ class ViewController: UIViewController {
     var deal3CardButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Deal 3 Card", for: .normal)
+        button.addTarget(self,
+                         action: #selector(touchDealButton),
+                         for: .touchUpInside)
         
         return button
     }()
@@ -49,14 +52,29 @@ class ViewController: UIViewController {
     let topStackView = UIStackView()
     let bottomStackView = UIStackView()
     
+    // MARK: - button selector functions
+    
+    @objc func touchDealButton() {
+        engine?.dealThreeCard()
+        updateUI()
+    }
+    
+    // MARK: - functions
+    
     func updateUI() {
         updateScoreLabelUI()
         updateRemainingDeckCardLabelUI()
+        updateBoard()
     }
     
+    // MARK: - override functions
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        boardView.subviews.forEach { $0.removeFromSuperview() }
-        boardView.backgroundColor = .red
+        
+        view.setNeedsUpdateConstraints()
+        boardView.removeAllSubViews()
+        boardView.setNeedsUpdateConstraints()
+        updateBoard()
     }
 
     override func viewDidLoad() {
@@ -65,10 +83,10 @@ class ViewController: UIViewController {
         engine = SetEngine()
         [boardView].forEach { view.addSubview($0) }
         
-        updateUI()
         topStackViewConfigure()
         autoLayoutBoard()
         bottomStackViewConfigure()
+        updateUI()
     }
     
     override func viewDidLayoutSubviews() {
@@ -85,8 +103,8 @@ extension ViewController {
     
     func autoLayoutBoard() {
         boardView.anchor(top: topStackView.bottomAnchor,
-                         leading: view.leadingAnchor,
-                         trailing: view.trailingAnchor,
+                         leading: view.safeAreaLayoutGuide.leadingAnchor,
+                         trailing: view.safeAreaLayoutGuide.trailingAnchor,
                          bottom: view.safeAreaLayoutGuide.bottomAnchor,
                          padding: .init(top: 0,
                                         left: 0,
@@ -97,9 +115,10 @@ extension ViewController {
     }
     
     func getGrid() -> Grid? {
-        let tupleOfRowsAndColumnsOfBoard = getRowsAndColumnsForGrid()
         
-        var grid = Grid(layout: .dimensions(rowCount: tupleOfRowsAndColumnsOfBoard.0, columnCount: tupleOfRowsAndColumnsOfBoard.1),
+        let tupleOfRowsAndColumnsOfBoard = getRowsAndColumnsForGrid()
+        var grid = Grid(layout: .dimensions(rowCount: tupleOfRowsAndColumnsOfBoard.0,
+                                            columnCount: tupleOfRowsAndColumnsOfBoard.1),
                         frame: boardView.frame)
         grid.frame.origin = boardView.frame.origin
         
@@ -118,21 +137,31 @@ extension ViewController {
         
         let numberOfCardsOnBoard: Double = Double(engine.cardsOnTable.count)
         var rows = Int(sqrt(numberOfCardsOnBoard))
-        
-        if (rows * rows) < Int(numberOfCardsOnBoard) {
-            rows += 1
-        }
-        
         var columns = rows
         
-        if rows * (columns - 1) >= Int(numberOfCardsOnBoard) {
-            columns -= 1
+        if view.frame.size.width < view.frame.size.height {
+            
+            if (rows * rows) < Int(numberOfCardsOnBoard) {
+                rows += 1
+            }
+            columns = rows
+            if rows * (columns - 1) >= Int(numberOfCardsOnBoard) {
+                columns -= 1
+            }
+            
+        } else {
+            columns += 1
+            if (rows * columns) <= Int(numberOfCardsOnBoard) {
+                columns += 1
+            }
         }
         
         return (rows, columns)
     }
     
     func updateBoard() {
+        boardView.removeAllSubViews()
+        
         guard let grid = getGrid() else { return }
         guard let cardsOnBoard = engine?.cardsOnTable else { return }
         
@@ -140,12 +169,19 @@ extension ViewController {
             let cardView = getCardView(card: cardsOnBoard[$0])
             if let cardFrame = grid[$0] {
                 boardView.addSubview(cardView)
-                cardView.frame = cardFrame.insetBy(dx: cardFrame.width * 0.01,
-                                                   dy: cardFrame.height * 0.01)
+                if view.frame.size.width > view.frame.size.height {
+                    let newFrame = CGRect(origin: cardFrame.origin,
+                                          size: CGSize(width: cardFrame.height * 0.8,
+                                                       height: cardFrame.height))
+                    cardView.frame = newFrame.insetBy(dx: newFrame.width * 0.01,
+                                                      dy: newFrame.height * 0.01)
+                } else {
+                    cardView.frame = cardFrame.insetBy(dx: cardFrame.width * 0.01,
+                                                       dy: cardFrame.height * 0.01)
+                }
             }
         }
     }
-    
 }
 
 // MARK: - functions related to label and button UI
@@ -204,5 +240,13 @@ extension ViewController {
                                            left: view.frame.size.width * 0.05,
                                            bottom: 0,
                                            right:  view.frame.size.width * 0.05)
+    }
+}
+
+extension UIView {
+    
+    func removeAllSubViews() {
+        subviews.forEach { $0.removeFromSuperview() }
+        setNeedsDisplay()
     }
 }
