@@ -126,10 +126,13 @@ extension ViewController {
     }
     
     func getCardView(card: Card) -> SetCardView {
-        SetCardView(number: card.number,
+        let card = SetCardView(number: card.number,
                     shape: card.shape,
                     shade: card.shade,
                     color: card.color)
+        addTapGesture(for: card)
+
+        return card
     }
     
     func getRowsAndColumnsForGrid() -> (Int, Int) {
@@ -179,6 +182,7 @@ extension ViewController {
                     cardView.frame = cardFrame.insetBy(dx: cardFrame.width * 0.01,
                                                        dy: cardFrame.height * 0.01)
                 }
+                cardView.makeRoundedCorner()
             }
         }
     }
@@ -242,6 +246,20 @@ extension ViewController {
                                            right:  view.frame.size.width * 0.05)
     }
 }
+
+// MARK: - gesture related
+
+extension ViewController {
+    
+    func addTapGesture(for cardView: SetCardView) {
+        let tap = UITapGestureRecognizer(target: cardView,
+                                         action: #selector(
+                                            cardView.handlerWhenTapped(byHandlingTapGestureRecognizer:)
+                                            ))
+        cardView.addGestureRecognizer(tap)
+    }
+}
+
 
 extension UIView {
     

@@ -13,12 +13,14 @@ class SetCardView: UIView {
     var shape: Shape = .diamond { didSet { setNeedsDisplay() }}
     var shade: Shade = .fill { didSet { setNeedsDisplay() }}
     var color: Color = .red { didSet { setNeedsDisplay() }}
+    var isSelected: Bool = false { didSet { setNeedsDisplay() } }
     
     var shapeScaleSmall = SizeRatio.shapeRectSmallRatioToPerRowRect {
         didSet {
             setNeedsDisplay()
         }
     }
+    
     var shapeScaleLarge = SizeRatio.shapeRectLargeRatioToPerRowRect {
         didSet {
             setNeedsDisplay()
@@ -30,7 +32,32 @@ class SetCardView: UIView {
         drawShape(shape: shape, shade: shade, color: color)
     }
     
-    func drawShape(shape: Shape, shade: Shade, color: Color) {
+    func makeRoundedCorner() {
+        let minLength = min(frame.size.width, frame.size.height)
+        layer.cornerRadius = minLength * SizeRatio.roundedCornerRatioToMinLenth
+        layer.masksToBounds = true
+    }
+    
+    @objc func handlerWhenTapped(byHandlingTapGestureRecognizer recognizer: UITapGestureRecognizer) {
+        switch recognizer.state {
+        case .ended:
+            isSelected.toggle()
+            drawBorderDependingOnTapped()
+        default:
+            break
+        }
+    }
+    
+    private func drawBorderDependingOnTapped() {
+        if isSelected {
+            layer.borderWidth = borderWidthWhenTapped
+            layer.borderColor = UIColor.systemGreen.cgColor
+        } else {
+            layer.borderWidth = 0
+        }
+    }
+    
+    private func drawShape(shape: Shape, shade: Shade, color: Color) {
         var shapePerRowRect = CGRect(origin: bounds.origin,
                                      size: shapePerRowSize)
         if number == 3 {
@@ -135,12 +162,12 @@ class SetCardView: UIView {
         path.move(to: CGPoint(x: drawArea.minX, y: drawArea.maxY))
         path.addCurve(to: CGPoint(x: drawArea.maxX,
                                   y: drawArea.maxY),
-                      controlPoint1: CGPoint(x: drawArea.size.width * 0.4, y: drawArea.maxY - height30),
+                      controlPoint1: CGPoint(x: drawArea.size.width * SizeRatio.controlPointRatioForSquiggle, y: drawArea.maxY - height30),
                       controlPoint2: CGPoint(x: drawArea.midX + width10, y: drawArea.maxY + height30))
         path.addLine(to: CGPoint(x: drawArea.maxX, y: drawArea.minY))
         path.addCurve(to: drawArea.origin,
                       controlPoint1: CGPoint(x: drawArea.midX + width10, y: drawArea.minY + height30),
-                      controlPoint2: CGPoint(x: drawArea.size.width * 0.4, y: drawArea.minY - height30))
+                      controlPoint2: CGPoint(x: drawArea.size.width * SizeRatio.controlPointRatioForSquiggle, y: drawArea.minY - height30))
         path.addLine(to: CGPoint(x: drawArea.minX, y: drawArea.maxY))
         uiColor.setStroke()
         path.lineWidth = lineWidthOfShape
@@ -203,6 +230,9 @@ class SetCardView: UIView {
         self.shape = shape
         self.shade = shade
         self.color = color
+        
+        
+        drawBorderDependingOnTapped()
     }
     
     required init?(coder: NSCoder) {
@@ -220,6 +250,8 @@ extension SetCardView {
         static let shapeRectSmallRatioToPerRowRect: CGFloat = 0.8
         static let shapeRectLargeRatioToPerRowRect: CGFloat = 0.6
         static let ovalCornerRadiusRatioToShapeRectHeight: CGFloat = 0.4
+        static let roundedCornerRatioToMinLenth: CGFloat = 0.1
+        static let controlPointRatioForSquiggle: CGFloat = 0.4
     }
     
     var numberOfStripe: CGFloat {
@@ -242,4 +274,11 @@ extension SetCardView {
         1.0
     }
     
+    var borderWidthWhenTapped: CGFloat {
+        3
+    }
+    
 }
+
+    
+
