@@ -13,7 +13,7 @@ class SetCardView: UIView {
     var shape: Shape = .diamond { didSet { setNeedsDisplay() }}
     var shade: Shade = .fill { didSet { setNeedsDisplay() }}
     var color: Color = .red { didSet { setNeedsDisplay() }}
-    var isSelected: Bool = false { didSet { setNeedsDisplay() } }
+    var isSelected: Bool = false
     
     var shapeScaleSmall = SizeRatio.shapeRectSmallRatioToPerRowRect {
         didSet {
@@ -38,17 +38,7 @@ class SetCardView: UIView {
         layer.masksToBounds = true
     }
     
-    @objc func handlerWhenTapped(byHandlingTapGestureRecognizer recognizer: UITapGestureRecognizer) {
-        switch recognizer.state {
-        case .ended:
-            isSelected.toggle()
-            drawBorderDependingOnTapped()
-        default:
-            break
-        }
-    }
-    
-    private func drawBorderDependingOnTapped() {
+     func drawBorderDependingOnTapped() {
         if isSelected {
             layer.borderWidth = borderWidthWhenTapped
             layer.borderColor = UIColor.systemGreen.cgColor
@@ -218,7 +208,8 @@ class SetCardView: UIView {
     init(number: Number = .three,
          shape: Shape = .squiggle,
          shade: Shade = .open,
-         color: Color = .red) {
+         color: Color = .red,
+         isSelected: Bool = false) {
         super.init(frame: .zero)
         
         switch number {
@@ -230,9 +221,7 @@ class SetCardView: UIView {
         self.shape = shape
         self.shade = shade
         self.color = color
-        
-        
-        drawBorderDependingOnTapped()
+        self.isSelected = isSelected
     }
     
     required init?(coder: NSCoder) {

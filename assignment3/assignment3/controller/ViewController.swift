@@ -38,7 +38,6 @@ class ViewController: UIViewController {
         button.addTarget(self,
                          action: #selector(touchDealButton),
                          for: .touchUpInside)
-        
         return button
     }()
     
@@ -129,7 +128,8 @@ extension ViewController {
         let card = SetCardView(number: card.number,
                     shape: card.shape,
                     shade: card.shade,
-                    color: card.color)
+                    color: card.color,
+                    isSelected: card.isSelected)
         addTapGesture(for: card)
 
         return card
@@ -184,6 +184,7 @@ extension ViewController {
                 }
                 cardView.makeRoundedCorner()
             }
+            cardView.drawBorderDependingOnTapped()
         }
     }
 }
@@ -230,13 +231,13 @@ extension ViewController {
         view.addSubview(bottomStackView)
         
         bottomStackView.axis = .horizontal
-        bottomStackView.anchor(top: boardView.bottomAnchor,
+        bottomStackView.anchor(top: nil,
                                leading: view.leadingAnchor,
                                trailing: view.trailingAnchor,
                                bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                               padding: .init(top: view.frame.height * 0.03,
+                               padding: .init(top: 0,
                                               left: 0,
-                                              bottom: 0,
+                                              bottom: view.frame.height * 0.05,
                                               right: 0))
         bottomStackView.distribution = .equalSpacing
         bottomStackView.isLayoutMarginsRelativeArrangement = true
@@ -244,6 +245,8 @@ extension ViewController {
                                            left: view.frame.size.width * 0.05,
                                            bottom: 0,
                                            right:  view.frame.size.width * 0.05)
+        boardView.layer.borderWidth = 2
+        boardView.layer.borderColor = UIColor.systemYellow.cgColor
     }
 }
 
@@ -252,11 +255,24 @@ extension ViewController {
 extension ViewController {
     
     func addTapGesture(for cardView: SetCardView) {
-        let tap = UITapGestureRecognizer(target: cardView,
+        let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(
-                                            cardView.handlerWhenTapped(byHandlingTapGestureRecognizer:)
+                                            handlerWhenTapped(byHandlingTapGestureRecognizer:)
                                             ))
         cardView.addGestureRecognizer(tap)
+    }
+    
+    @objc func handlerWhenTapped(byHandlingTapGestureRecognizer recognizer: UITapGestureRecognizer) {
+        guard let cardView = recognizer.view as? SetCardView else { return }
+        guard let tempNum = boardView.subviews.firstIndex(of: cardView) else { return }
+        
+        switch recognizer.state {
+        case .ended:
+            engine?.touchCard(at: tempNum)
+            updateUI()
+        default:
+            break
+        }
     }
 }
 
