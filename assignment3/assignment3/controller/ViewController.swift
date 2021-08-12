@@ -9,7 +9,21 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var engine: SetEngine?
+    var count: Int = 0 {
+        didSet {
+            
+        }
+    }
+    
+    var engine: SetEngine? {
+        didSet { updateUI() }
+    }
+    
+    var timerLabel: UILabel = {
+        let label = UILabel()
+
+        return label
+    }()
     
     var scoreLabel: UILabel = {
         let label = UILabel()
@@ -26,8 +40,12 @@ class ViewController: UIViewController {
     var newGameButton: UIButton = {
         let button = UIButton(type: .system)
         let plusImage = UIImage(systemName: "plus.circle.fill")
+        
         button.setImage(plusImage, for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 20), forImageIn: .normal)
+        button.addTarget(self,
+                         action: #selector(touchNewGameButton),
+                         for: .touchUpInside)
         
         return button
     }()
@@ -43,7 +61,7 @@ class ViewController: UIViewController {
     
     var boardView: UIView = {
         let board = UIView()
-        board.backgroundColor = .systemIndigo
+//        board.backgroundColor = .systemIndigo
         
         return board
     }()
@@ -52,6 +70,10 @@ class ViewController: UIViewController {
     let bottomStackView = UIStackView()
     
     // MARK: - button selector functions
+    
+    @objc func touchNewGameButton() {
+        engine = SetEngine()
+    }
     
     @objc func touchDealButton() {
         engine?.dealThreeCard()
@@ -66,7 +88,11 @@ class ViewController: UIViewController {
         updateBoard()
     }
     
-    // MARK: - override functions
+}
+
+// MARK: - override functions
+
+extension ViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         
@@ -78,6 +104,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         
         engine = SetEngine()
         [boardView].forEach { view.addSubview($0) }
@@ -92,9 +119,8 @@ class ViewController: UIViewController {
         super.viewDidLayoutSubviews()
         updateBoard()
     }
-    
-
 }
+
 
 // MARK: - configure board view
 
@@ -110,6 +136,8 @@ extension ViewController {
                                         bottom: view.frame.size.height * 0.2,
                                         right: 0)
                          )
+        
+        addPinchGestureToBoard(for: boardView)
         
     }
     
@@ -130,6 +158,7 @@ extension ViewController {
                     shade: card.shade,
                     color: card.color,
                     isSelected: card.isSelected)
+        
         addTapGesture(for: card)
 
         return card
@@ -182,9 +211,11 @@ extension ViewController {
                     cardView.frame = cardFrame.insetBy(dx: cardFrame.width * 0.01,
                                                        dy: cardFrame.height * 0.01)
                 }
-                cardView.makeRoundedCorner()
             }
+            
+            cardView.makeRoundedCorner()
             cardView.drawBorderDependingOnTapped()
+            cardView.backgroundColor = .systemBackground
         }
     }
 }
@@ -254,12 +285,31 @@ extension ViewController {
 
 extension ViewController {
     
+    func addPinchGestureToBoard(for boardView: UIView) {
+        let pinch = UIPinchGestureRecognizer(target: self,
+                                             action: #selector(
+                                                pinchHandler(recognizer:)
+                                                ))
+        boardView.addGestureRecognizer(pinch)
+    }
+    
     func addTapGesture(for cardView: SetCardView) {
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(
                                             handlerWhenTapped(byHandlingTapGestureRecognizer:)
                                             ))
         cardView.addGestureRecognizer(tap)
+    }
+    
+    @objc func pinchHandler(recognizer: UIPinchGestureRecognizer) {
+        switch recognizer.state {
+        case .ended:
+            engine?.cardsOnTable.shuffle()
+            updateUI()
+            recognizer.scale = 1.0
+        default:
+            break
+        }
     }
     
     @objc func handlerWhenTapped(byHandlingTapGestureRecognizer recognizer: UITapGestureRecognizer) {
@@ -274,6 +324,23 @@ extension ViewController {
             break
         }
     }
+}
+
+// MARK: - timer
+
+extension ViewController {
+    
+    var timer: Timer {
+        get {
+            let interval: TimeInterval = 1
+            
+            return Timer.scheduledTimer(withTimeInterval: interval,
+                                 repeats: true) { [unowned self] _ in
+                self.count += 1
+            }
+        }
+    }
+    
 }
 
 

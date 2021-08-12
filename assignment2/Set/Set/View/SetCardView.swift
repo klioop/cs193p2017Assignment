@@ -28,7 +28,6 @@ class SetCardView: UIView {
     }
     
     override func draw(_ rect: CGRect) {
-        
         drawShape(shape: shape, shade: shade, color: color)
     }
     
@@ -41,7 +40,7 @@ class SetCardView: UIView {
      func drawBorderDependingOnTapped() {
         if isSelected {
             layer.borderWidth = borderWidthWhenTapped
-            layer.borderColor = UIColor.systemGreen.cgColor
+            layer.borderColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1).cgColor
         } else {
             layer.borderWidth = 0
         }
