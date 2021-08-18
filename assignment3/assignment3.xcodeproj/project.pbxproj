@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		31B6B3BF26BA709A00398DF9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6B3BE26BA709A00398DF9 /* AppDelegate.swift */; };
 		31B6B3C126BA709A00398DF9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6B3C026BA709A00398DF9 /* SceneDelegate.swift */; };
-		31B6B3C326BA709A00398DF9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6B3C226BA709A00398DF9 /* ViewController.swift */; };
+		31B6B3C326BA709A00398DF9 /* SetGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6B3C226BA709A00398DF9 /* SetGameViewController.swift */; };
 		31B6B3C626BA709A00398DF9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31B6B3C426BA709A00398DF9 /* Main.storyboard */; };
 		31B6B3C826BA709B00398DF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31B6B3C726BA709B00398DF9 /* Assets.xcassets */; };
 		31B6B3CB26BA709B00398DF9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31B6B3C926BA709B00398DF9 /* LaunchScreen.storyboard */; };
@@ -19,13 +19,14 @@
 		31B6B3E226BA717F00398DF9 /* SetEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6B3E126BA717F00398DF9 /* SetEngine.swift */; };
 		31B6B3E426BA71A800398DF9 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6B3E326BA71A800398DF9 /* Card.swift */; };
 		31B6B3E626BA71F500398DF9 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6B3E526BA71F500398DF9 /* MainView.swift */; };
+		31B6B3EA26C7CF5900398DF9 /* CardBehaviors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6B3E926C7CF5900398DF9 /* CardBehaviors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		31B6B3BB26BA709A00398DF9 /* assignment3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assignment3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		31B6B3BE26BA709A00398DF9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		31B6B3C026BA709A00398DF9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		31B6B3C226BA709A00398DF9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		31B6B3C226BA709A00398DF9 /* SetGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameViewController.swift; sourceTree = "<group>"; };
 		31B6B3C526BA709A00398DF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		31B6B3C726BA709B00398DF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		31B6B3CA26BA709B00398DF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -36,6 +37,7 @@
 		31B6B3E126BA717F00398DF9 /* SetEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SetEngine.swift; path = ../../../assignment2/Set/Set/SetEngine.swift; sourceTree = "<group>"; };
 		31B6B3E326BA71A800398DF9 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Card.swift; path = ../../../assignment2/Set/Set/Card.swift; sourceTree = "<group>"; };
 		31B6B3E526BA71F500398DF9 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		31B6B3E926C7CF5900398DF9 /* CardBehaviors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBehaviors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 		31B6B3D326BA70C100398DF9 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				31B6B3EB26C7CF6B00398DF9 /* animation */,
 				31B6B3DB26BA714700398DF9 /* SetCardView.swift */,
 				31B6B3C426BA709A00398DF9 /* Main.storyboard */,
 				31B6B3E526BA71F500398DF9 /* MainView.swift */,
@@ -111,7 +114,7 @@
 		31B6B3D526BA70CB00398DF9 /* controller */ = {
 			isa = PBXGroup;
 			children = (
-				31B6B3C226BA709A00398DF9 /* ViewController.swift */,
+				31B6B3C226BA709A00398DF9 /* SetGameViewController.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -123,6 +126,14 @@
 				31B6B3D826BA711D00398DF9 /* Grid.swift */,
 			);
 			path = utility;
+			sourceTree = "<group>";
+		};
+		31B6B3EB26C7CF6B00398DF9 /* animation */ = {
+			isa = PBXGroup;
+			children = (
+				31B6B3E926C7CF5900398DF9 /* CardBehaviors.swift */,
+			);
+			path = animation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,7 +209,8 @@
 				31B6B3E226BA717F00398DF9 /* SetEngine.swift in Sources */,
 				31B6B3E626BA71F500398DF9 /* MainView.swift in Sources */,
 				31B6B3DC26BA714700398DF9 /* SetCardView.swift in Sources */,
-				31B6B3C326BA709A00398DF9 /* ViewController.swift in Sources */,
+				31B6B3EA26C7CF5900398DF9 /* CardBehaviors.swift in Sources */,
+				31B6B3C326BA709A00398DF9 /* SetGameViewController.swift in Sources */,
 				31B6B3BF26BA709A00398DF9 /* AppDelegate.swift in Sources */,
 				31B6B3C126BA709A00398DF9 /* SceneDelegate.swift in Sources */,
 				31B6B3DA26BA711D00398DF9 /* Grid.swift in Sources */,

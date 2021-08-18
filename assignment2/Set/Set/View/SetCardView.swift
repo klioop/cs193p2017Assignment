@@ -14,6 +14,7 @@ class SetCardView: UIView {
     var shade: Shade = .fill { didSet { setNeedsDisplay() }}
     var color: Color = .red { didSet { setNeedsDisplay() }}
     var isSelected: Bool = false
+    var isMatched: Bool = false
     
     var shapeScaleSmall = SizeRatio.shapeRectSmallRatioToPerRowRect {
         didSet {
@@ -208,7 +209,8 @@ class SetCardView: UIView {
          shape: Shape = .squiggle,
          shade: Shade = .open,
          color: Color = .red,
-         isSelected: Bool = false) {
+         isSelected: Bool = false,
+         isMatched: Bool = false) {
         super.init(frame: .zero)
         
         switch number {
@@ -221,6 +223,8 @@ class SetCardView: UIView {
         self.shade = shade
         self.color = color
         self.isSelected = isSelected
+        self.isMatched = isMatched
+        
     }
     
     required init?(coder: NSCoder) {

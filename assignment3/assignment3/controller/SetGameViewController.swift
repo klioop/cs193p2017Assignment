@@ -7,7 +7,9 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class SetGameViewController: UIViewController {
+    
+    var numberOfTouchCard = 0
     
     var count: Int = 0 {
         didSet {
@@ -15,9 +17,7 @@ class ViewController: UIViewController {
         }
     }
     
-    var engine: SetEngine? {
-        didSet { updateUI() }
-    }
+    var engine: SetEngine?
     
     var timerLabel: UILabel = {
         let label = UILabel()
@@ -56,6 +56,11 @@ class ViewController: UIViewController {
         button.addTarget(self,
                          action: #selector(touchDealButton),
                          for: .touchUpInside)
+        button.contentEdgeInsets = .init(top: 5, left: 10, bottom: 5, right: 10)
+        button.backgroundColor = .systemBackground
+        button.layer.cornerRadius = 5
+        
+        
         return button
     }()
     
@@ -92,7 +97,7 @@ class ViewController: UIViewController {
 
 // MARK: - override functions
 
-extension ViewController {
+extension SetGameViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         
@@ -124,7 +129,7 @@ extension ViewController {
 
 // MARK: - configure board view
 
-extension ViewController {
+extension SetGameViewController {
     
     func autoLayoutBoard() {
         boardView.anchor(top: topStackView.bottomAnchor,
@@ -143,21 +148,26 @@ extension ViewController {
     
     func getGrid() -> Grid? {
         
-        let tupleOfRowsAndColumnsOfBoard = getRowsAndColumnsForGrid()
-        var grid = Grid(layout: .dimensions(rowCount: tupleOfRowsAndColumnsOfBoard.0,
-                                            columnCount: tupleOfRowsAndColumnsOfBoard.1),
-                        frame: boardView.frame)
-        grid.frame.origin = boardView.frame.origin
+//        let tupleOfRowsAndColumnsOfBoard = getRowsAndColumnsForGrid()
+//        var grid = Grid(layout: .dimensions(rowCount: tupleOfRowsAndColumnsOfBoard.0,
+//                                            columnCount: tupleOfRowsAndColumnsOfBoard.1),
+//                        frame: boardView.frame)
+//        grid.frame.origin = boardView.frame.origin
+        var grid = Grid(layout: .aspectRatio(1), frame: boardView.frame)
+        grid.cellCount = engine?.cardsOnTable.count ?? 10
         
         return grid
     }
     
     func getCardView(card: Card) -> SetCardView {
-        let card = SetCardView(number: card.number,
-                    shape: card.shape,
-                    shade: card.shade,
-                    color: card.color,
-                    isSelected: card.isSelected)
+        let card = SetCardView(
+            number: card.number,
+            shape: card.shape,
+            shade: card.shade,
+            color: card.color,
+            isSelected: card.isSelected,
+            isMatched: card.isMatched
+        )
         
         addTapGesture(for: card)
 
@@ -203,7 +213,7 @@ extension ViewController {
                 boardView.addSubview(cardView)
                 if view.frame.size.width > view.frame.size.height {
                     let newFrame = CGRect(origin: cardFrame.origin,
-                                          size: CGSize(width: cardFrame.height * 0.8,
+                                          size: CGSize(width: cardFrame.height * 0.7,
                                                        height: cardFrame.height))
                     cardView.frame = newFrame.insetBy(dx: newFrame.width * 0.01,
                                                       dy: newFrame.height * 0.01)
@@ -212,17 +222,37 @@ extension ViewController {
                                                        dy: cardFrame.height * 0.01)
                 }
             }
-            
+
             cardView.makeRoundedCorner()
             cardView.drawBorderDependingOnTapped()
             cardView.backgroundColor = .systemBackground
+            layoutSetCardsAnimation()
+        }
+        
+        
+    }
+    
+    func updateBoardUIWhenTouch(_ card: SetCardView) {
+        updateBoard()
+        card.drawBorderDependingOnTapped()
+        
+        if let isSet = engine?.findSet, isSet {
+            guard let temp = engine?.lastMatchedCardsIndices else { return }
+            engine?.replaceMatchedCards()
+            updateBoard()
+            temp.forEach { self.boardView.subviews[$0].alpha = 0 }
+            engine?.findSet = false
+            simpleAnimation {
+                temp.forEach { self.boardView.subviews[$0].alpha = 1 }
+            }
         }
     }
+    
 }
 
 // MARK: - functions related to label and button UI
 
-extension ViewController {
+extension SetGameViewController {
     
     func updateScoreLabelUI() {
         guard let engine = engine else { return }
@@ -232,6 +262,7 @@ extension ViewController {
     
     func updateRemainingDeckCardLabelUI() {
         guard let engine = engine else { return }
+        remainingDeckCardLabel.backgroundColor = .systemBackground
         
         remainingDeckCardLabel.text = "Deck: \(engine.remaingCardOnDeck ?? 0)"
     }
@@ -252,9 +283,9 @@ extension ViewController {
         topStackView.distribution = .equalSpacing
         topStackView.isLayoutMarginsRelativeArrangement = true
         topStackView.layoutMargins = .init(top: 0,
-                                           left: view.frame.size.width * 0.05,
+                                           left: view.frame.size.width * 0.03,
                                            bottom: 0,
-                                           right:  view.frame.size.width * 0.05)
+                                           right:  view.frame.size.width * 0.03)
     }
     
     func bottomStackViewConfigure() {
@@ -273,9 +304,9 @@ extension ViewController {
         bottomStackView.distribution = .equalSpacing
         bottomStackView.isLayoutMarginsRelativeArrangement = true
         bottomStackView.layoutMargins = .init(top: 0,
-                                           left: view.frame.size.width * 0.05,
+                                           left: view.frame.size.width * 0.03,
                                            bottom: 0,
-                                           right:  view.frame.size.width * 0.05)
+                                           right:  view.frame.size.width * 0.03)
         boardView.layer.borderWidth = 2
         boardView.layer.borderColor = UIColor.systemYellow.cgColor
     }
@@ -283,7 +314,7 @@ extension ViewController {
 
 // MARK: - gesture related
 
-extension ViewController {
+extension SetGameViewController {
     
     func addPinchGestureToBoard(for boardView: UIView) {
         let pinch = UIPinchGestureRecognizer(target: self,
@@ -296,7 +327,7 @@ extension ViewController {
     func addTapGesture(for cardView: SetCardView) {
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(
-                                            handlerWhenTapped(byHandlingTapGestureRecognizer:)
+                                            handlerWhenTapped(by:)
                                             ))
         cardView.addGestureRecognizer(tap)
     }
@@ -312,14 +343,16 @@ extension ViewController {
         }
     }
     
-    @objc func handlerWhenTapped(byHandlingTapGestureRecognizer recognizer: UITapGestureRecognizer) {
+    @objc func handlerWhenTapped(by recognizer: UITapGestureRecognizer) {
         guard let cardView = recognizer.view as? SetCardView else { return }
-        guard let tempNum = boardView.subviews.firstIndex(of: cardView) else { return }
+        guard let indexOfCardTapped = boardView.subviews.firstIndex(of: cardView) else { return }
+//        guard var engine = engine else { return }
         
         switch recognizer.state {
         case .ended:
-            engine?.touchCard(at: tempNum)
-            updateUI()
+            numberOfTouchCard += 1
+            engine?.touchCard(at: indexOfCardTapped)
+            updateBoardUIWhenTouch(cardView)
         default:
             break
         }
@@ -328,7 +361,7 @@ extension ViewController {
 
 // MARK: - timer
 
-extension ViewController {
+extension SetGameViewController {
     
     var timer: Timer {
         get {
@@ -343,6 +376,45 @@ extension ViewController {
     
 }
 
+// MARK: - animation
+
+extension SetGameViewController {
+    
+    func simpleAnimation(animation: @escaping () -> Void,
+                         completion: ((_ position: UIViewAnimatingPosition) -> Void)? = nil ) {
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 1,
+            delay: 0,
+            options: [],
+            animations: animation,
+            completion: completion)
+    }
+    
+    private func layoutSetCardsAnimation() {
+        
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 1,
+                                                       delay: 0,
+                                                       options: [],
+                                                       animations: {
+                                                        self.boardView.layoutIfNeeded()
+                                                       })
+    }
+    
+    private func animationForMatchedCards(at indices: [Int]) {
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 1,
+            delay: 0,
+            options: [],
+            animations: {
+                indices.forEach {
+                    self.boardView.subviews[$0].alpha = 0
+                }
+            },
+            completion: { finished in
+                
+            })
+    }
+}
 
 extension UIView {
     

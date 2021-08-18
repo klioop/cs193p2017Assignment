@@ -22,6 +22,8 @@ struct SetEngine {
             }
         }
     }
+    var lastMatchedCardsIndices: [Int]?
+    var findSet: Bool = false
     
     mutating func dealThreeCard() {
         if deck.count > 0 {
@@ -45,11 +47,10 @@ struct SetEngine {
                 selectedCardIndices.append(cardNumber)
                 
                 if isSet(for: selectedCardIndices) {
-                    selectedCardIndices.forEach {
-                        cardsOnTable[$0].isMatched = true
-                        let randomIdx = Int.random(in: 0..<deck.count)
-                        cardsOnTable[$0] = deck.remove(at: randomIdx)
-                    }
+                    findSet = true
+                    lastMatchedCardsIndices = selectedCardIndices
+                    selectedCardIndices.forEach { cardsOnTable[$0].isMatched = true }
+//                    replaceMatchedCards()
                     score += 3
                 } else {
                     selectedCardIndices.forEach { cardsOnTable[$0].isSelected = false}
@@ -58,7 +59,15 @@ struct SetEngine {
                 selectedCardIndices = []
             }
         }
-        
+    }
+    
+    mutating func replaceMatchedCards() {
+        cardsOnTable.indices.forEach {
+            if cardsOnTable[$0].isMatched {
+                let randomIdx = Int.random(in: 0..<deck.count)
+                cardsOnTable[$0] = deck.remove(at: randomIdx)
+            }
+        }
     }
     
     // return true if the selected cards of three form set
@@ -75,6 +84,7 @@ struct SetEngine {
         
         return result
     }
+    
     
     init(numberOfCards: Int = 81) {
         
@@ -95,7 +105,7 @@ struct SetEngine {
         
         deck.shuffle()
         
-        for _ in 1..<10 {
+        for _ in 1..<13 {
             let randomIdx = Int.random(in: 0..<deck.count)
             cardsOnTable.append(deck.remove(at: randomIdx))
         }
