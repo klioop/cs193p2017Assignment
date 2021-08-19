@@ -10,6 +10,7 @@ import UIKit
 class SetGameViewController: UIViewController {
     
     var numberOfTouchCard = 0
+    var isDeal: Bool = false
     
     var count: Int = 0 {
         didSet {
@@ -39,13 +40,14 @@ class SetGameViewController: UIViewController {
     
     var newGameButton: UIButton = {
         let button = UIButton(type: .system)
-        let plusImage = UIImage(systemName: "plus.circle.fill")
+        let plusImage = UIImage(systemName: "plus.circle")
         
         button.setImage(plusImage, for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 20), forImageIn: .normal)
         button.addTarget(self,
                          action: #selector(touchNewGameButton),
                          for: .touchUpInside)
+        button.tintColor = .systemIndigo
         
         return button
     }()
@@ -82,33 +84,11 @@ class SetGameViewController: UIViewController {
     
     @objc func touchDealButton() {
         engine?.dealThreeCard()
-        guard let grid = getGrid() else { return }
-        guard let cardsOnBoard = engine?.cardsOnTable else { return }
-        let previousNumberOfCards = cardsOnBoard.count - 3
-        
-        (0..<previousNumberOfCards).forEach { idx in
-            if let newFrame = grid[idx] {
-                simpleAnimation {
-                    self.boardView.subviews[idx].frame = newFrame
-                } completion: { fin in
-                    self.updateRemainingDeckCardLabelUI()
-                }
-            }
+        if let engine = engine, engine.remaingCardOnDeck == 0 {
+            return
         }
-        
-        (previousNumberOfCards..<cardsOnBoard.count).forEach { idx in
-            if let cardFrame = grid[idx] {
-                let cardView = getCardView(card: cardsOnBoard[idx])
-                boardView.addSubview(cardView)
-                cardView.alpha = 0
-                cardView.frame = cardFrame.insetByScale(of: 0.01)
-                self.simpleAnimation {
-//                    self.boardView.subviews[idx].frame = cardFrame.insetByScale(of: 0.01)
-                    self.boardView.subviews[idx].alpha = 1
-                }
-                configureCardView(cardView)
-            }
-        }
+        isDeal = true
+        updateBoard()
     }
     
     // MARK: - functions
@@ -137,19 +117,19 @@ extension SetGameViewController {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         
-        engine = SetEngine()
         [boardView].forEach { view.addSubview($0) }
         
         topStackViewConfigure()
         autoLayoutBoard()
         bottomStackViewConfigure()
-        updateUI()
+        engine = SetEngine()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        updateBoard()
+        updateUI()
     }
+    
 }
 
 
@@ -228,31 +208,61 @@ extension SetGameViewController {
     }
     
     func updateBoard() {
-        boardView.removeAllSubViews()
-        
         guard let grid = getGrid() else { return }
         guard let cardsOnBoard = engine?.cardsOnTable else { return }
         
-        cardsOnBoard.indices.forEach {
-            let cardView = getCardView(card: cardsOnBoard[$0])
-            if let cardFrame = grid[$0] {
-                boardView.addSubview(cardView)
-                if view.frame.size.width > view.frame.size.height {
-                    let newFrame = CGRect(origin: cardFrame.origin,
-                                          size: CGSize(width: cardFrame.height * 0.7,
-                                                       height: cardFrame.height))
-                    cardView.frame = newFrame.insetBy(dx: newFrame.width * 0.01,
-                                                      dy: newFrame.height * 0.01)
-                } else {
-                    cardView.frame = cardFrame.insetBy(dx: cardFrame.width * 0.01,
-                                                       dy: cardFrame.height * 0.01)
+        if !isDeal {
+            boardView.removeAllSubViews()
+            
+            cardsOnBoard.indices.forEach {
+                let cardView = getCardView(card: cardsOnBoard[$0])
+                if let cardFrame = grid[$0] {
+                    boardView.addSubview(cardView)
+                    cardView.frame = cardFrame.insetByScale(of: 0.01)
+                }
+                cardView.drawBorderDependingOnTapped()
+                configureCardView(cardView)
+            }
+        } else {
+            cardsOnBoard.indices[0..<cardsOnBoard.count - 3].forEach { idx in
+                if let newCardFrame = grid[idx]?.insetByScale(of: 0.01) {
+                    simpleAnimation {
+                        self.boardView.subviews[idx].frame = newCardFrame
+                    }
                 }
             }
-            cardView.drawBorderDependingOnTapped()
-            configureCardView(cardView)
+            cardsOnBoard.indices[cardsOnBoard.count - 3..<cardsOnBoard.count].forEach { idx in
+                let cardView = getCardView(card: cardsOnBoard[idx])
+                boardView.addSubview(cardView)
+                guard let cardFrame = grid[idx]?.insetByScale(of: 0.01) else { return }
+                boardView.subviews[idx].frame = cardFrame
+                configureCardView(cardView)
+                boardView.subviews[idx].alpha = 0
+            }
+            
+            let tempNumber = cardsOnBoard.count - 3
+            
+            cardsOnBoard.indices[cardsOnBoard.count - 3..<cardsOnBoard.count].forEach { idx in
+                guard let cardFrame = grid[idx]?.insetByScale(of: 0.01), isDeal else { return }
+                self.boardView.subviews[idx].frame.origin = CGPoint(x: 277, y: self.view.frame.height * 0.8)
+                self.boardView.subviews[idx].frame.size = self.bottomStackView.arrangedSubviews[1].frame.size
+                let timeIntervalValue = Double(idx - tempNumber + 1) * 0.4
+                
+                Timer.scheduledTimer(withTimeInterval: TimeInterval(timeIntervalValue),
+                                     repeats: false) { [unowned self] _ in
+                    self.simpleAnimation {
+                        self.boardView.subviews[idx].frame = cardFrame
+                        self.boardView.subviews[idx].alpha = 1
+                        self.boardView.subviews[idx].setNeedsDisplay()
+                    }
+                }
+            }
+            isDeal = false
         }
     }
     
+    /// update ui when set
+    /// This function is called in the gesture selector
     private func updateBoardUIWhenSet() {
         
         if let isSet = engine?.findSet, isSet {
@@ -271,7 +281,6 @@ extension SetGameViewController {
         cardView.makeRoundedCorner()
         cardView.backgroundColor = .systemBackground
     }
-    
 }
 
 // MARK: - functions related to label and button UI
@@ -425,19 +434,10 @@ extension SetGameViewController {
                                                        })
     }
     
-    private func animationForMatchedCards(at indices: [Int]) {
-        UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 1,
-            delay: 0,
-            options: [],
-            animations: {
-                indices.forEach {
-                    self.boardView.subviews[$0].alpha = 0
-                }
-            },
-            completion: { finished in
-                
-            })
+    private func dealCardsInAnimation() {
+        let deck = UIView()
+        deck.frame = deal3CardButton.frame
+        view.addSubview(deck)
     }
 }
 
