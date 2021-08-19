@@ -82,7 +82,33 @@ class SetGameViewController: UIViewController {
     
     @objc func touchDealButton() {
         engine?.dealThreeCard()
-        updateUI()
+        guard let grid = getGrid() else { return }
+        guard let cardsOnBoard = engine?.cardsOnTable else { return }
+        let previousNumberOfCards = cardsOnBoard.count - 3
+        
+        (0..<previousNumberOfCards).forEach { idx in
+            if let newFrame = grid[idx] {
+                simpleAnimation {
+                    self.boardView.subviews[idx].frame = newFrame
+                } completion: { fin in
+                    self.updateRemainingDeckCardLabelUI()
+                }
+            }
+        }
+        
+        (previousNumberOfCards..<cardsOnBoard.count).forEach { idx in
+            if let cardFrame = grid[idx] {
+                let cardView = getCardView(card: cardsOnBoard[idx])
+                boardView.addSubview(cardView)
+                cardView.alpha = 0
+                cardView.frame = cardFrame.insetByScale(of: 0.01)
+                self.simpleAnimation {
+//                    self.boardView.subviews[idx].frame = cardFrame.insetByScale(of: 0.01)
+                    self.boardView.subviews[idx].alpha = 1
+                }
+                configureCardView(cardView)
+            }
+        }
     }
     
     // MARK: - functions
@@ -222,30 +248,28 @@ extension SetGameViewController {
                                                        dy: cardFrame.height * 0.01)
                 }
             }
-
-            cardView.makeRoundedCorner()
             cardView.drawBorderDependingOnTapped()
-            cardView.backgroundColor = .systemBackground
-            layoutSetCardsAnimation()
+            configureCardView(cardView)
         }
-        
-        
     }
     
-    func updateBoardUIWhenTouch(_ card: SetCardView) {
-        updateBoard()
-        card.drawBorderDependingOnTapped()
+    private func updateBoardUIWhenSet() {
         
         if let isSet = engine?.findSet, isSet {
-            guard let temp = engine?.lastMatchedCardsIndices else { return }
+            guard let recentMatchedCardsIndices = engine?.lastMatchedCardsIndices else { return }
             engine?.replaceMatchedCards()
             updateBoard()
-            temp.forEach { self.boardView.subviews[$0].alpha = 0 }
+            recentMatchedCardsIndices.forEach { self.boardView.subviews[$0].alpha = 0 }
             engine?.findSet = false
             simpleAnimation {
-                temp.forEach { self.boardView.subviews[$0].alpha = 1 }
+                recentMatchedCardsIndices.forEach { self.boardView.subviews[$0].alpha = 1 }
             }
         }
+    }
+    
+    private func configureCardView(_ cardView: SetCardView) {
+        cardView.makeRoundedCorner()
+        cardView.backgroundColor = .systemBackground
     }
     
 }
@@ -352,7 +376,8 @@ extension SetGameViewController {
         case .ended:
             numberOfTouchCard += 1
             engine?.touchCard(at: indexOfCardTapped)
-            updateBoardUIWhenTouch(cardView)
+            updateBoard()
+            updateBoardUIWhenSet()
         default:
             break
         }
@@ -423,3 +448,11 @@ extension UIView {
         setNeedsDisplay()
     }
 }
+
+extension CGRect {
+    
+    func insetByScale(of scale: CGFloat) -> CGRect {
+        insetBy(dx: size.width * scale, dy: size.height * scale)
+    }
+}
+

@@ -50,7 +50,6 @@ struct SetEngine {
                     findSet = true
                     lastMatchedCardsIndices = selectedCardIndices
                     selectedCardIndices.forEach { cardsOnTable[$0].isMatched = true }
-//                    replaceMatchedCards()
                     score += 3
                 } else {
                     selectedCardIndices.forEach { cardsOnTable[$0].isSelected = false}

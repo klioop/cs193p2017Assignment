@@ -13,7 +13,7 @@ class SetCardView: UIView {
     var shape: Shape = .diamond { didSet { setNeedsDisplay() }}
     var shade: Shade = .fill { didSet { setNeedsDisplay() }}
     var color: Color = .red { didSet { setNeedsDisplay() }}
-    var isSelected: Bool = false
+    var isSelected: Bool = false { didSet { setNeedsDisplay() } }
     var isMatched: Bool = false
     
     var shapeScaleSmall = SizeRatio.shapeRectSmallRatioToPerRowRect {
@@ -45,6 +45,7 @@ class SetCardView: UIView {
         } else {
             layer.borderWidth = 0
         }
+        
     }
     
     private func drawShape(shape: Shape, shade: Shade, color: Color) {
