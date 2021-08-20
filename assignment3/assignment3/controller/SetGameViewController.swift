@@ -9,7 +9,12 @@ import UIKit
 
 class SetGameViewController: UIViewController {
     
+    lazy var animator: UIDynamicAnimator = UIDynamicAnimator(referenceView: view)
+    
+    lazy var flyAwayBehavior = FlayAwayBehavior(in: animator)
+    
     var numberOfTouchCard = 0
+    
     var isDeal: Bool = false
     
     var count: Int = 0 {
@@ -152,6 +157,11 @@ extension SetGameViewController {
         
     }
     
+    /// There are 3 ways to divide frame size of a view into grid using grid file
+    /// I first tried the way where rows and columns for grid have to be determined
+    /// But, the way of deciding aspect ratio of the grid was chosen
+    /// Note that the aspect ratio is for the whole area for the grid, not each grid cell
+    /// And, with aspect ratio, you have to set cell count property of grid
     func getGrid() -> Grid? {
         
 //        let tupleOfRowsAndColumnsOfBoard = getRowsAndColumnsForGrid()
@@ -224,40 +234,44 @@ extension SetGameViewController {
                 configureCardView(cardView)
             }
         } else {
-            cardsOnBoard.indices[0..<cardsOnBoard.count - 3].forEach { idx in
-                if let newCardFrame = grid[idx]?.insetByScale(of: 0.01) {
-                    simpleAnimation {
-                        self.boardView.subviews[idx].frame = newCardFrame
-                    }
-                }
-            }
-            cardsOnBoard.indices[cardsOnBoard.count - 3..<cardsOnBoard.count].forEach { idx in
-                let cardView = getCardView(card: cardsOnBoard[idx])
-                boardView.addSubview(cardView)
-                guard let cardFrame = grid[idx]?.insetByScale(of: 0.01) else { return }
-                boardView.subviews[idx].frame = cardFrame
-                configureCardView(cardView)
-                boardView.subviews[idx].alpha = 0
-            }
-            
-            let tempNumber = cardsOnBoard.count - 3
-            
-            cardsOnBoard.indices[cardsOnBoard.count - 3..<cardsOnBoard.count].forEach { idx in
-                guard let cardFrame = grid[idx]?.insetByScale(of: 0.01), isDeal else { return }
-                self.boardView.subviews[idx].frame.origin = CGPoint(x: 277, y: self.view.frame.height * 0.8)
-                self.boardView.subviews[idx].frame.size = self.bottomStackView.arrangedSubviews[1].frame.size
-                let timeIntervalValue = Double(idx - tempNumber + 1) * 0.4
-                
-                Timer.scheduledTimer(withTimeInterval: TimeInterval(timeIntervalValue),
-                                     repeats: false) { [unowned self] _ in
-                    self.simpleAnimation {
-                        self.boardView.subviews[idx].frame = cardFrame
-                        self.boardView.subviews[idx].alpha = 1
-                        self.boardView.subviews[idx].setNeedsDisplay()
-                    }
-                }
-            }
+            updateBoardUIWhenDeal()
             isDeal = false
+        }
+    }
+    
+    private func updateBoardUIWhenDeal() {
+        guard let grid = getGrid() else { return }
+        guard let cardsOnBoard = engine?.cardsOnTable else { return }
+        
+        cardsOnBoard.indices[0..<cardsOnBoard.count - 3].forEach { idx in
+            if let newCardFrame = grid[idx]?.insetByScale(of: 0.01) {
+                simpleAnimation {
+                    self.boardView.subviews[idx].frame = newCardFrame
+                }
+            }
+        }
+        
+        cardsOnBoard.indices[cardsOnBoard.count - 3..<cardsOnBoard.count].forEach { idx in
+            let cardView = getCardView(card: cardsOnBoard[idx])
+            boardView.addSubview(cardView)
+            guard let cardFrame = grid[idx]?.insetByScale(of: 0.01) else { return }
+            let tempNumber = cardsOnBoard.count - 3
+            let timeIntervalValue = Double(idx - tempNumber + 1) * 0.4
+            
+            boardView.subviews[idx].frame = cardFrame
+            configureCardView(cardView)
+            boardView.subviews[idx].alpha = 0
+            self.boardView.subviews[idx].frame.origin = CGPoint(x: 277, y: self.view.frame.height * 0.8)
+            self.boardView.subviews[idx].frame.size = self.bottomStackView.arrangedSubviews[1].frame.size
+            
+            Timer.scheduledTimer(withTimeInterval: TimeInterval(timeIntervalValue),
+                                 repeats: false) { [unowned self] _ in
+                self.simpleAnimation {
+                    self.boardView.subviews[idx].frame = cardFrame
+                    self.boardView.subviews[idx].alpha = 1
+                    self.boardView.subviews[idx].setNeedsDisplay()
+                }
+            }
         }
     }
     
@@ -266,14 +280,22 @@ extension SetGameViewController {
     private func updateBoardUIWhenSet() {
         
         if let isSet = engine?.findSet, isSet {
-            guard let recentMatchedCardsIndices = engine?.lastMatchedCardsIndices else { return }
-            engine?.replaceMatchedCards()
-            updateBoard()
-            recentMatchedCardsIndices.forEach { self.boardView.subviews[$0].alpha = 0 }
-            engine?.findSet = false
-            simpleAnimation {
-                recentMatchedCardsIndices.forEach { self.boardView.subviews[$0].alpha = 1 }
-            }
+//            guard let recentMatchedCardsIndices = engine?.lastMatchedCardsIndices else { return }
+            flayAwayAnimationWhenSet()
+//            engine?.replaceMatchedCards()
+//            updateBoard()
+//            recentMatchedCardsIndices.forEach { self.boardView.subviews[$0].alpha = 0 }
+//            engine?.findSet = false
+//            simpleAnimation {
+//                recentMatchedCardsIndices.forEach { self.boardView.subviews[$0].alpha = 1 }
+//            }
+        }
+    }
+    
+    private func flayAwayAnimationWhenSet() {
+        guard let recentMatchedCardsIndices = engine?.lastMatchedCardsIndices else { return }
+        recentMatchedCardsIndices.forEach { idx in
+            flyAwayBehavior.addItem(boardView.subviews[idx])
         }
     }
     
