@@ -10,9 +10,13 @@ import Foundation
 struct SetEngine {
     
     private var deck = [Card]()
+    
     var cardsOnTable = Array<Card>()
+    
     var selectedCardIndices = [Int]()
+    
     var score = 0
+    
     var remaingCardOnDeck: Int? {
         get {
             if deck.count < 0 {
@@ -22,7 +26,9 @@ struct SetEngine {
             }
         }
     }
+    
     var lastMatchedCardsIndices: [Int]?
+    
     var findSet: Bool = false
     
     mutating func dealThreeCard() {
@@ -48,6 +54,7 @@ struct SetEngine {
                 
                 if isSet(for: selectedCardIndices) {
                     findSet = true
+                    
                     lastMatchedCardsIndices = selectedCardIndices
                     selectedCardIndices.forEach { cardsOnTable[$0].isMatched = true }
                     score += 3
