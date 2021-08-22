@@ -11,7 +11,7 @@ class SetGameViewController: UIViewController {
     
     lazy var animator: UIDynamicAnimator = UIDynamicAnimator(referenceView: view)
     
-    lazy var flyAwayBehavior = FlayAwayBehavior(in: animator)
+    lazy var flyAwayBehavior = FlyAwayBehavior(in: animator)
     
     var numberOfTouchCard = 0
     
@@ -66,7 +66,6 @@ class SetGameViewController: UIViewController {
         button.contentEdgeInsets = .init(top: 5, left: 10, bottom: 5, right: 10)
         button.backgroundColor = .systemBackground
         button.layer.cornerRadius = 5
-        
         
         return button
     }()
@@ -169,6 +168,7 @@ extension SetGameViewController {
 //                                            columnCount: tupleOfRowsAndColumnsOfBoard.1),
 //                        frame: boardView.frame)
 //        grid.frame.origin = boardView.frame.origin
+        
         var grid = Grid(layout: .aspectRatio(1), frame: boardView.frame)
         grid.cellCount = engine?.cardsOnTable.count ?? 10
         
@@ -303,9 +303,7 @@ extension SetGameViewController {
         if let isSet = engine?.findSet, isSet {
             guard let recentMatchedCardsIndices = engine?.lastMatchedCardsIndices else { return }
             
-            flayAwayAnimationWhenSet()
-            
-            delegate.dynamicAnimatorDidPause?(animator)
+            flyAwayAnimation()
             
             engine?.replaceMatchedCards()
             
@@ -317,17 +315,45 @@ extension SetGameViewController {
         }
     }
     
-    private func flayAwayAnimationWhenSet() {
+    private func flyAwayAnimation() {
         guard let engine = engine else { return }
         guard let recentMatchedCardsIndices = engine.lastMatchedCardsIndices else { return }
+        var temp = 0
+        guard let lastCardIndex = recentMatchedCardsIndices.last else { return }
+        
         recentMatchedCardsIndices.forEach { idx in
+            temp += 1
+            let timeInterval = TimeInterval(Double(temp) * 0.5)
+            
             let card = self.boardView.subviews[idx] as! SetCardView
+            
             card.alpha = 0
             let cardViewCopy = getCardView(card: engine.cardsOnTable[idx])
+            
             configureCardView(cardViewCopy)
             cardViewCopy.frame = card.frame
             boardView.addSubview(cardViewCopy)
             flyAwayBehavior.addItem(cardViewCopy)
+            
+            flyAwayBehavior.snapPoint = CGPoint(x: view.frame.maxX - 100, y: view.frame.maxY - 200)
+            Timer.scheduledTimer(withTimeInterval: timeInterval,
+                                 repeats: false,
+                                 block: {_ in
+//                                    self.flyAwayBehavior.addItemForSnap(cardViewCopy)
+                                    self.animator.removeAllBehaviors()
+                                    self.simpleAnimation {
+                                        self.animator.addBehavior(UISnapBehavior(item: cardViewCopy, snapTo: self.flyAwayBehavior.snapPoint))
+                                        cardViewCopy.frame.size.width = cardViewCopy.frame.width / 2
+                                        cardViewCopy.frame.size.height = cardViewCopy.frame.height / 2
+                                    } completion: { fin in
+                                        if idx != lastCardIndex {
+                                            cardViewCopy.alpha = 0
+                                        }
+                                        cardViewCopy.setNeedsDisplay()
+                                    }
+                                    
+                                 })
+            
         }
     }
     
@@ -503,7 +529,7 @@ extension SetGameViewController: UIDynamicAnimatorDelegate {
         self
     }
     
-    func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
+    func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator, card: SetCardView) {
         
     }
     

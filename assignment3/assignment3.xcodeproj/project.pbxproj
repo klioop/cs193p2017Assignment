@@ -19,7 +19,7 @@
 		31B6B3E226BA717F00398DF9 /* SetEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6B3E126BA717F00398DF9 /* SetEngine.swift */; };
 		31B6B3E426BA71A800398DF9 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6B3E326BA71A800398DF9 /* Card.swift */; };
 		31B6B3E626BA71F500398DF9 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6B3E526BA71F500398DF9 /* MainView.swift */; };
-		31B6B3EA26C7CF5900398DF9 /* FlayAwayBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6B3E926C7CF5900398DF9 /* FlayAwayBehavior.swift */; };
+		31B6B3EA26C7CF5900398DF9 /* FlyAwayBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6B3E926C7CF5900398DF9 /* FlyAwayBehavior.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,7 +37,7 @@
 		31B6B3E126BA717F00398DF9 /* SetEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SetEngine.swift; path = ../../../assignment2/Set/Set/SetEngine.swift; sourceTree = "<group>"; };
 		31B6B3E326BA71A800398DF9 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Card.swift; path = ../../../assignment2/Set/Set/Card.swift; sourceTree = "<group>"; };
 		31B6B3E526BA71F500398DF9 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		31B6B3E926C7CF5900398DF9 /* FlayAwayBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlayAwayBehavior.swift; sourceTree = "<group>"; };
+		31B6B3E926C7CF5900398DF9 /* FlyAwayBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlyAwayBehavior.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,7 +131,7 @@
 		31B6B3EB26C7CF6B00398DF9 /* animation */ = {
 			isa = PBXGroup;
 			children = (
-				31B6B3E926C7CF5900398DF9 /* FlayAwayBehavior.swift */,
+				31B6B3E926C7CF5900398DF9 /* FlyAwayBehavior.swift */,
 			);
 			path = animation;
 			sourceTree = "<group>";
@@ -209,7 +209,7 @@
 				31B6B3E226BA717F00398DF9 /* SetEngine.swift in Sources */,
 				31B6B3E626BA71F500398DF9 /* MainView.swift in Sources */,
 				31B6B3DC26BA714700398DF9 /* SetCardView.swift in Sources */,
-				31B6B3EA26C7CF5900398DF9 /* FlayAwayBehavior.swift in Sources */,
+				31B6B3EA26C7CF5900398DF9 /* FlyAwayBehavior.swift in Sources */,
 				31B6B3C326BA709A00398DF9 /* SetGameViewController.swift in Sources */,
 				31B6B3BF26BA709A00398DF9 /* AppDelegate.swift in Sources */,
 				31B6B3C126BA709A00398DF9 /* SceneDelegate.swift in Sources */,

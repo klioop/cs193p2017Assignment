@@ -7,7 +7,9 @@
 
 import UIKit
 
-class FlayAwayBehavior: UIDynamicBehavior {
+class FlyAwayBehavior: UIDynamicBehavior {
+    
+    var snapPoint: CGPoint = .zero
     
     lazy var collisionBehavior: UICollisionBehavior = {
         let behavior = UICollisionBehavior()
@@ -24,6 +26,15 @@ class FlayAwayBehavior: UIDynamicBehavior {
         
         return behavior
     }()
+    
+    private func snap(_ item: UIDynamicItem) {
+        let snap = UISnapBehavior(item: item, snapTo: .zero)
+        
+        snap.snapPoint = snapPoint
+        snap.damping = 5
+        
+        addChildBehavior(snap)
+    }
     
     private func push(_ item: UIDynamicItem) {
         let push = UIPushBehavior(items: [item], mode: .instantaneous)
@@ -42,7 +53,7 @@ class FlayAwayBehavior: UIDynamicBehavior {
                 push.angle = (CGFloat.pi*2) * CGFloat.random(in: 0.2..<1)
             }
         }
-        push.magnitude = CGFloat(5.0) + CGFloat(2.0) * CGFloat.random(in: 0.2..<1)
+        push.magnitude = CGFloat(10.0) + CGFloat(2.0) * CGFloat.random(in: 0.2..<1)
         push.action = { [unowned push, weak self] in
             self?.removeChildBehavior(push)
         }
@@ -55,11 +66,16 @@ class FlayAwayBehavior: UIDynamicBehavior {
         push(item)
     }
     
+    func addItemForSnap(_ item: UIDynamicItem) {
+        dynamicAnimator?.removeBehavior(collisionBehavior)
+        
+        snap(item)
+    }
+    
     func removeItem(_ item: UIDynamicItem) {
         collisionBehavior.removeItem(item)
         itemBehavior.removeItem(item)
     }
-    
     
     override init() {
         super.init()
@@ -71,6 +87,4 @@ class FlayAwayBehavior: UIDynamicBehavior {
         self.init()
         animator.addBehavior(self)
     }
-
-
 }
