@@ -260,7 +260,7 @@ extension SetCardView {
     }
     
     var lineWidthOfShape: CGFloat {
-        3.0
+        1.5
     }
     
     var lineWidthOfStripe: CGFloat {

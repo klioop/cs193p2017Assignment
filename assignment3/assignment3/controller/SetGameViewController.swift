@@ -318,12 +318,13 @@ extension SetGameViewController {
     private func flyAwayAnimation() {
         guard let engine = engine else { return }
         guard let recentMatchedCardsIndices = engine.lastMatchedCardsIndices else { return }
-        var temp = 0
+//        var temp = 0
         guard let lastCardIndex = recentMatchedCardsIndices.last else { return }
+        flyAwayBehavior.snapPoint = CGPoint(x: view.frame.maxX - 100, y: view.frame.maxY - 200)
         
         recentMatchedCardsIndices.forEach { idx in
-            temp += 1
-            let timeInterval = TimeInterval(Double(temp) * 0.5)
+//            temp += 1
+//            let timeInterval = TimeInterval(Double(temp) * 0.5)
             
             let card = self.boardView.subviews[idx] as! SetCardView
             
@@ -333,26 +334,19 @@ extension SetGameViewController {
             configureCardView(cardViewCopy)
             cardViewCopy.frame = card.frame
             boardView.addSubview(cardViewCopy)
-            flyAwayBehavior.addItem(cardViewCopy)
             
-            flyAwayBehavior.snapPoint = CGPoint(x: view.frame.maxX - 100, y: view.frame.maxY - 200)
-            Timer.scheduledTimer(withTimeInterval: timeInterval,
-                                 repeats: false,
-                                 block: {_ in
-//                                    self.flyAwayBehavior.addItemForSnap(cardViewCopy)
-                                    self.animator.removeAllBehaviors()
-                                    self.simpleAnimation {
-                                        self.animator.addBehavior(UISnapBehavior(item: cardViewCopy, snapTo: self.flyAwayBehavior.snapPoint))
-                                        cardViewCopy.frame.size.width = cardViewCopy.frame.width / 2
-                                        cardViewCopy.frame.size.height = cardViewCopy.frame.height / 2
-                                    } completion: { fin in
-                                        if idx != lastCardIndex {
-                                            cardViewCopy.alpha = 0
-                                        }
-                                        cardViewCopy.setNeedsDisplay()
-                                    }
-                                    
-                                 })
+            simpleAnimation { [unowned self] in
+                self.flyAwayBehavior.addItem(cardViewCopy)
+                if flyAwayBehavior.snapPhase {
+                    cardViewCopy.frame.size.width = cardViewCopy.frame.width / 2
+                    cardViewCopy.frame.size.height = cardViewCopy.frame.height / 2
+                }
+            } completion: { [unowned self] fin in
+                self.flyAwayBehavior.removeItem(cardViewCopy)
+                if idx != lastCardIndex {
+                    cardViewCopy.alpha = 0
+                }
+            }
             
         }
     }
@@ -459,7 +453,6 @@ extension SetGameViewController {
     @objc func handlerWhenTapped(by recognizer: UITapGestureRecognizer) {
         guard let cardView = recognizer.view as? SetCardView else { return }
         guard let indexOfCardTapped = boardView.subviews.firstIndex(of: cardView) else { return }
-//        guard var engine = engine else { return }
         
         switch recognizer.state {
         case .ended:
