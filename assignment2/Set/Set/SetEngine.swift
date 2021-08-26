@@ -57,7 +57,7 @@ struct SetEngine {
                     
                     lastMatchedCardsIndices = selectedCardIndices
                     selectedCardIndices.forEach { cardsOnTable[$0].isMatched = true }
-                    score += 3
+                    score += 1
                 } else {
                     selectedCardIndices.forEach { cardsOnTable[$0].isSelected = false}
                 }
@@ -70,8 +70,10 @@ struct SetEngine {
     mutating func replaceMatchedCards() {
         cardsOnTable.indices.forEach {
             if cardsOnTable[$0].isMatched {
-                let randomIdx = Int.random(in: 0..<deck.count)
-                cardsOnTable[$0] = deck.remove(at: randomIdx)
+                if deck.count > 0 {
+                    let randomIdx = Int.random(in: 0..<deck.count)
+                    cardsOnTable[$0] = deck.remove(at: randomIdx)
+                }
             }
         }
     }

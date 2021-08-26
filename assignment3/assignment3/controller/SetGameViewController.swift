@@ -17,6 +17,9 @@ class SetGameViewController: UIViewController {
     
     var isDeal: Bool = false
     
+    /// dealing flag is for preventing a dealing animation when a dealing animation is already being executed
+    var dealingFlag: Bool = false
+    
     var count: Int = 0 {
         didSet {
             
@@ -33,6 +36,15 @@ class SetGameViewController: UIViewController {
     
     var scoreLabel: UILabel = {
         let label = UILabel()
+//        button.isUserInteractionEnabled = false
+//        button.titleLabel?.font = .systemFont(ofSize: 30)
+//        button.setTitleColor(.black, for: .normal)
+//        button.backgroundColor = .systemBackground
+//        button.layer.cornerRadius = 5
+        label.backgroundColor = .systemBackground
+        label.layer.cornerRadius = 5
+        label.layer.masksToBounds = true
+        label.textAlignment = .center
         
         return label
     }()
@@ -59,11 +71,15 @@ class SetGameViewController: UIViewController {
     
     var deal3CardButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Deal 3 Card", for: .normal)
+        button.setTitle("Deck: 69", for: .normal)
         button.addTarget(self,
                          action: #selector(touchDealButton),
                          for: .touchUpInside)
-        button.contentEdgeInsets = .init(top: 5, left: 10, bottom: 5, right: 10)
+        button.titleLabel?.font = .systemFont(ofSize: 20)
+        button.setTitleColor(.black, for: .normal)
+//        button.titleLabel?.font = .preferredFont(forTextStyle: UIFont.TextStyle.body)
+        
+        button.contentEdgeInsets = .init(top: 10, left: 0, bottom: 10, right: 0)
         button.backgroundColor = .systemBackground
         button.layer.cornerRadius = 5
         
@@ -72,7 +88,6 @@ class SetGameViewController: UIViewController {
     
     var boardView: UIView = {
         let board = UIView()
-//        board.backgroundColor = .systemIndigo
         
         return board
     }()
@@ -84,15 +99,22 @@ class SetGameViewController: UIViewController {
     
     @objc func touchNewGameButton() {
         engine = SetEngine()
+        deal3CardButton.setTitle("DECK: 69", for: .normal)
     }
     
     @objc func touchDealButton() {
-        engine?.dealThreeCard()
+        
         if let engine = engine, engine.remaingCardOnDeck == 0 {
             return
         }
-        isDeal = true
-        updateBoard()
+        
+        if !dealingFlag {
+            engine?.dealThreeCard()
+            isDeal = true
+            updateBoard()
+        }
+        
+        
     }
     
     // MARK: - functions
@@ -141,7 +163,7 @@ extension SetGameViewController {
 
 extension SetGameViewController {
     
-    func autoLayoutBoard() {
+    private func autoLayoutBoard() {
         boardView.anchor(top: topStackView.bottomAnchor,
                          leading: view.safeAreaLayoutGuide.leadingAnchor,
                          trailing: view.safeAreaLayoutGuide.trailingAnchor,
@@ -153,7 +175,6 @@ extension SetGameViewController {
                          )
         
         addPinchGestureToBoard(for: boardView)
-        
     }
     
     /// There are 3 ways to divide frame size of a view into grid using grid file
@@ -161,7 +182,7 @@ extension SetGameViewController {
     /// But, the way of deciding aspect ratio of the grid was chosen
     /// Note that the aspect ratio is for the whole area for the grid, not each grid cell
     /// And, with aspect ratio, you have to set cell count property of grid
-    func getGrid() -> Grid? {
+    private func getGrid() -> Grid? {
         
 //        let tupleOfRowsAndColumnsOfBoard = getRowsAndColumnsForGrid()
 //        var grid = Grid(layout: .dimensions(rowCount: tupleOfRowsAndColumnsOfBoard.0,
@@ -175,7 +196,7 @@ extension SetGameViewController {
         return grid
     }
     
-    func getCardView(card: Card) -> SetCardView {
+    private func getCardView(card: Card) -> SetCardView {
         let card = SetCardView(
             number: card.number,
             shape: card.shape,
@@ -190,7 +211,7 @@ extension SetGameViewController {
         return card
     }
     
-    func getRowsAndColumnsForGrid() -> (Int, Int) {
+    private func getRowsAndColumnsForGrid() -> (Int, Int) {
         guard let engine = engine else { return (0, 0) }
         
         let numberOfCardsOnBoard: Double = Double(engine.cardsOnTable.count)
@@ -217,7 +238,7 @@ extension SetGameViewController {
         return (rows, columns)
     }
     
-    func updateBoard() {
+    private func updateBoard() {
         guard let grid = getGrid() else { return }
         guard let cardsOnBoard = engine?.cardsOnTable else { return }
         
@@ -233,7 +254,7 @@ extension SetGameViewController {
                 cardView.drawBorderDependingOnTapped()
                 configureCardView(cardView)
             }
-        } else {
+        } else if isDeal, !dealingFlag {
             updateBoardUIWhenDeal()
             isDeal = false
         }
@@ -253,17 +274,18 @@ extension SetGameViewController {
         }
         
         let lastThreeCardsIndices: [Int] = Array((countOfCardsOnBoard - 3..<countOfCardsOnBoard))
-        updateUIForDealCardsIn(for: lastThreeCardsIndices)
+        updateUIForDealingCardsIn(for: lastThreeCardsIndices)
     }
     
-    private func updateUIForDealCardsIn(for indices: [Int]) {
+    private func updateUIForDealingCardsIn(for indices: [Int]) {
         guard let grid = getGrid() else { return }
         guard let cardsOnBoard = engine?.cardsOnTable else { return }
         var tempNumber = 0
+        dealingFlag = true
         
         indices.forEach { idx in
-            
             tempNumber += 1
+            
             let timeIntervalValue = Double(tempNumber) * 0.4
             let cardView = getCardView(card: cardsOnBoard[idx])
             
@@ -273,6 +295,7 @@ extension SetGameViewController {
             } else {
                 boardView.addSubview(cardView)
             }
+            
             guard let cardFrame = grid[idx]?.insetByScale(of: 0.01) else { return }
             
             boardView.subviews[idx].frame = cardFrame
@@ -280,8 +303,8 @@ extension SetGameViewController {
             
             configureCardView(cardView)
             
-            self.boardView.subviews[idx].frame.origin = CGPoint(x: 277, y: self.view.frame.height * 0.8)
-            self.boardView.subviews[idx].frame.size = self.bottomStackView.arrangedSubviews[1].frame.size
+            boardView.subviews[idx].frame.origin = CGPoint(x: 23, y: self.view.frame.height * 0.8)
+            boardView.subviews[idx].frame.size = bottomStackView.arrangedSubviews[0].frame.size
             
             Timer.scheduledTimer(withTimeInterval: TimeInterval(timeIntervalValue),
                                  repeats: false) { [unowned self] _ in
@@ -290,10 +313,20 @@ extension SetGameViewController {
                     self.boardView.subviews[idx].alpha = 1
                     self.boardView.subviews[idx].setNeedsDisplay()
                 } completion: { fin in
+                    if let lastIndex = indices.last, lastIndex == idx {
+                        let attributed = NSMutableAttributedString(string: "Deck: \(engine?.remaingCardOnDeck ?? -1)",
+                                                                   attributes: [
+                                                                    .font: UIFont.systemFont(ofSize: 20)
+                                                                   ])
+                        self.deal3CardButton.setAttributedTitle(attributed, for: .normal)
+                        self.dealingFlag = false
+                    }
+                    
                     self.boardView.subviews.forEach { $0.setNeedsDisplay() }
                 }
             }
         }
+        
     }
     
     /// update ui when set
@@ -307,9 +340,7 @@ extension SetGameViewController {
             
             engine?.replaceMatchedCards()
             
-            updateUIForDealCardsIn(for: recentMatchedCardsIndices)
-            
-//            boardView.subviews.forEach { $0.setNeedsDisplay() }
+            updateUIForDealingCardsIn(for: recentMatchedCardsIndices)
             
             engine?.findSet = false
         }
@@ -338,8 +369,8 @@ extension SetGameViewController {
             simpleAnimation { [unowned self] in
                 self.flyAwayBehavior.addItem(cardViewCopy)
                 if flyAwayBehavior.snapPhase {
-                    cardViewCopy.frame.size.width = cardViewCopy.frame.width / 2
-                    cardViewCopy.frame.size.height = cardViewCopy.frame.height / 2
+                    let deckFrameSize = bottomStackView.arrangedSubviews[0].frame.size
+                    cardViewCopy.frame.size = deckFrameSize
                 }
             } completion: { [unowned self] fin in
                 self.flyAwayBehavior.removeItem(cardViewCopy)
@@ -347,7 +378,6 @@ extension SetGameViewController {
                     cardViewCopy.alpha = 0
                 }
             }
-            
         }
     }
     
@@ -364,7 +394,7 @@ extension SetGameViewController {
     func updateScoreLabelUI() {
         guard let engine = engine else { return }
         
-        scoreLabel.text = "Score: \(engine.score)"
+        scoreLabel.text = "Set: \(engine.score)"
     }
     
     func updateRemainingDeckCardLabelUI() {
@@ -396,7 +426,7 @@ extension SetGameViewController {
     }
     
     func bottomStackViewConfigure() {
-        [remainingDeckCardLabel, deal3CardButton].forEach { bottomStackView.addArrangedSubview($0) }
+        [deal3CardButton, scoreLabel].forEach { bottomStackView.addArrangedSubview($0) }
         view.addSubview(bottomStackView)
         
         bottomStackView.axis = .horizontal
@@ -408,7 +438,8 @@ extension SetGameViewController {
                                               left: 0,
                                               bottom: view.frame.height * 0.05,
                                               right: 0))
-        bottomStackView.distribution = .equalSpacing
+        bottomStackView.distribution = .fillEqually
+        bottomStackView.spacing = 15
         bottomStackView.isLayoutMarginsRelativeArrangement = true
         bottomStackView.layoutMargins = .init(top: 0,
                                            left: view.frame.size.width * 0.03,
@@ -480,7 +511,6 @@ extension SetGameViewController {
             }
         }
     }
-    
 }
 
 // MARK: - animation

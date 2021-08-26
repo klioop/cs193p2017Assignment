@@ -70,9 +70,9 @@
 		31B6B3BD26BA709A00398DF9 /* assignment3 */ = {
 			isa = PBXGroup;
 			children = (
-				31B6B3D526BA70CB00398DF9 /* controller */,
 				31B6B3D426BA70C600398DF9 /* model */,
 				31B6B3D326BA70C100398DF9 /* view */,
+				31B6B3D526BA70CB00398DF9 /* controller */,
 				31B6B3D226BA70B400398DF9 /* supporting files */,
 				31B6B3D626BA70DA00398DF9 /* utility */,
 				31B6B3C726BA709B00398DF9 /* Assets.xcassets */,

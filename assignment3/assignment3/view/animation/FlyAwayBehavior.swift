@@ -33,10 +33,11 @@ class FlyAwayBehavior: UIDynamicBehavior {
         let snap = UISnapBehavior(item: item, snapTo: snapPoint)
         snapPhase = true
         
-        snap.damping = 2.0
+        snap.damping = 1.2
         self.dynamicAnimator?.removeBehavior(self.collisionBehavior)
         
-        Timer.scheduledTimer(withTimeInterval: 0.8, repeats: false) { _ in
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
+            self.collisionBehavior.removeItem(item)
             self.addChildBehavior(snap)
         }
     }
@@ -59,7 +60,7 @@ class FlyAwayBehavior: UIDynamicBehavior {
             }
         }
         
-        push.magnitude = CGFloat(10.0) + CGFloat(10.0) * CGFloat.random(in: 0.2..<1)
+        push.magnitude = CGFloat(3.0) + CGFloat(5.0) * CGFloat.random(in: 0.2..<1)
         push.action = { [unowned push, weak self] in
             self?.removeChildBehavior(push)
         }
