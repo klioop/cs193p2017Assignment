@@ -15,6 +15,8 @@ class SetGameViewController: UIViewController {
     
     private var isDeal: Bool = false
     
+    private var isInitial: Bool = true
+    
     /// dealing flag is for preventing a dealing animation when a dealing animation is already being executed
     private var dealingFlag: Bool = false
     
@@ -93,17 +95,17 @@ class SetGameViewController: UIViewController {
     
     @objc private func touchNewGameButton() {
         engine = SetEngine()
-        deal3CardButton.setTitle("DECK: 69", for: .normal)
+        let title = NSAttributedString(string: "DECK: 69", attributes: [:])
+        deal3CardButton.setAttributedTitle(title, for: .normal)
     }
     
     @objc private func touchDealButton() {
         if let engine = engine, engine.remaingCardOnDeck == 0 {
             return
         }
-        
         if !dealingFlag {
-            engine?.dealThreeCard()
             isDeal = true
+            engine?.dealThreeCard()
             updateBoard()
         }
     }
@@ -144,6 +146,12 @@ extension SetGameViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateUI()
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
     }
     
 }
@@ -231,10 +239,9 @@ extension SetGameViewController {
     private func updateBoard() {
         guard let grid = getGrid() else { return }
         guard let cardsOnBoard = engine?.cardsOnTable else { return }
-        
-        if !isDeal {
+         if !isDeal {
             boardView.removeAllSubViews()
-            
+
             cardsOnBoard.indices.forEach {
                 let cardView = getCardView(card: cardsOnBoard[$0])
                 if let cardFrame = grid[$0] {
@@ -244,7 +251,7 @@ extension SetGameViewController {
                 cardView.drawBorderDependingOnTapped()
                 configureCardView(cardView)
             }
-        } else if isDeal, !dealingFlag {
+    } else if isDeal, !dealingFlag {
             updateBoardUIWhenDeal()
             isDeal = false
         }
@@ -437,8 +444,8 @@ extension SetGameViewController {
                                            left: view.frame.size.width * 0.03,
                                            bottom: 0,
                                            right:  view.frame.size.width * 0.03)
-        boardView.layer.borderWidth = 2
-        boardView.layer.borderColor = UIColor.systemYellow.cgColor
+//        boardView.layer.borderWidth = 2
+//        boardView.layer.borderColor = UIColor.systemYellow.cgColor
     }
 }
 
