@@ -10,10 +10,15 @@ import UIKit
 class SetCardView: UIView {
     
     var number: CGFloat = 3 { didSet { setNeedsDisplay() }}
+    
     var shape: Shape = .diamond { didSet { setNeedsDisplay() }}
+    
     var shade: Shade = .fill { didSet { setNeedsDisplay() }}
+    
     var color: Color = .red { didSet { setNeedsDisplay() }}
+    
     var isSelected: Bool = false { didSet { setNeedsDisplay() } }
+    
     var isMatched: Bool = false
     
     var shapeScaleSmall = SizeRatio.shapeRectSmallRatioToPerRowRect {
@@ -38,7 +43,7 @@ class SetCardView: UIView {
         layer.masksToBounds = true
     }
     
-     func drawBorderDependingOnTapped() {
+    func drawBorderDependingOnTapped() {
         if isSelected {
             layer.borderWidth = borderWidthWhenTapped
             layer.borderColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1).cgColor

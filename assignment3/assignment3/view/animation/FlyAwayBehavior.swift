@@ -24,7 +24,7 @@ class FlyAwayBehavior: UIDynamicBehavior {
         let behavior = UIDynamicItemBehavior()
         behavior.allowsRotation = true
         behavior.elasticity = 1.0
-        behavior.resistance = 0
+        behavior.resistance = 0.3
         
         return behavior
     }()
@@ -34,7 +34,7 @@ class FlyAwayBehavior: UIDynamicBehavior {
         snapPhase = true
         
         snap.damping = 1.2
-        self.dynamicAnimator?.removeBehavior(self.collisionBehavior)
+//        self.dynamicAnimator?.removeBehavior(self.collisionBehavior)
         
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
             self.collisionBehavior.removeItem(item)

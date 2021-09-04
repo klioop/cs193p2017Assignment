@@ -9,16 +9,14 @@ import UIKit
 
 class SetGameViewController: UIViewController {
     
-    lazy var animator: UIDynamicAnimator = UIDynamicAnimator(referenceView: view)
+    private lazy var animator: UIDynamicAnimator = UIDynamicAnimator(referenceView: view)
     
-    lazy var flyAwayBehavior = FlyAwayBehavior(in: animator)
+    private lazy var flyAwayBehavior = FlyAwayBehavior(in: animator)
     
-    var numberOfTouchCard = 0
-    
-    var isDeal: Bool = false
+    private var isDeal: Bool = false
     
     /// dealing flag is for preventing a dealing animation when a dealing animation is already being executed
-    var dealingFlag: Bool = false
+    private var dealingFlag: Bool = false
     
     var count: Int = 0 {
         didSet {
@@ -26,7 +24,7 @@ class SetGameViewController: UIViewController {
         }
     }
     
-    var engine: SetEngine?
+    private var engine: SetEngine?
     
     var timerLabel: UILabel = {
         let label = UILabel()
@@ -34,13 +32,8 @@ class SetGameViewController: UIViewController {
         return label
     }()
     
-    var scoreLabel: UILabel = {
+    private var scoreLabel: UILabel = {
         let label = UILabel()
-//        button.isUserInteractionEnabled = false
-//        button.titleLabel?.font = .systemFont(ofSize: 30)
-//        button.setTitleColor(.black, for: .normal)
-//        button.backgroundColor = .systemBackground
-//        button.layer.cornerRadius = 5
         label.backgroundColor = .systemBackground
         label.layer.cornerRadius = 5
         label.layer.masksToBounds = true
@@ -49,17 +42,18 @@ class SetGameViewController: UIViewController {
         return label
     }()
     
-    var remainingDeckCardLabel: UILabel = {
+    private var remainingDeckCardLabel: UILabel = {
         let label = UILabel()
         
         return label
     }()
     
-    var newGameButton: UIButton = {
+    private var newGameButton: UIButton = {
         let button = UIButton(type: .system)
         let plusImage = UIImage(systemName: "plus.circle")
         
         button.setImage(plusImage, for: .normal)
+        button.setTitle(" New Game", for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 20), forImageIn: .normal)
         button.addTarget(self,
                          action: #selector(touchNewGameButton),
@@ -69,7 +63,7 @@ class SetGameViewController: UIViewController {
         return button
     }()
     
-    var deal3CardButton: UIButton = {
+    private var deal3CardButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Deck: 69", for: .normal)
         button.addTarget(self,
@@ -86,24 +80,23 @@ class SetGameViewController: UIViewController {
         return button
     }()
     
-    var boardView: UIView = {
+    private var boardView: UIView = {
         let board = UIView()
         
         return board
     }()
     
-    let topStackView = UIStackView()
-    let bottomStackView = UIStackView()
+    private let topStackView = UIStackView()
+    private let bottomStackView = UIStackView()
     
     // MARK: - button selector functions
     
-    @objc func touchNewGameButton() {
+    @objc private func touchNewGameButton() {
         engine = SetEngine()
         deal3CardButton.setTitle("DECK: 69", for: .normal)
     }
     
-    @objc func touchDealButton() {
-        
+    @objc private func touchDealButton() {
         if let engine = engine, engine.remaingCardOnDeck == 0 {
             return
         }
@@ -113,13 +106,11 @@ class SetGameViewController: UIViewController {
             isDeal = true
             updateBoard()
         }
-        
-        
     }
     
     // MARK: - functions
     
-    func updateUI() {
+    private func updateUI() {
         updateScoreLabelUI()
         updateRemainingDeckCardLabelUI()
         updateBoard()
@@ -132,7 +123,6 @@ class SetGameViewController: UIViewController {
 extension SetGameViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        
         view.setNeedsUpdateConstraints()
         boardView.removeAllSubViews()
         boardView.setNeedsUpdateConstraints()
@@ -349,14 +339,10 @@ extension SetGameViewController {
     private func flyAwayAnimation() {
         guard let engine = engine else { return }
         guard let recentMatchedCardsIndices = engine.lastMatchedCardsIndices else { return }
-//        var temp = 0
         guard let lastCardIndex = recentMatchedCardsIndices.last else { return }
         flyAwayBehavior.snapPoint = CGPoint(x: view.frame.maxX - 100, y: view.frame.maxY - 200)
         
         recentMatchedCardsIndices.forEach { idx in
-//            temp += 1
-//            let timeInterval = TimeInterval(Double(temp) * 0.5)
-            
             let card = self.boardView.subviews[idx] as! SetCardView
             
             card.alpha = 0
@@ -369,7 +355,13 @@ extension SetGameViewController {
             simpleAnimation { [unowned self] in
                 self.flyAwayBehavior.addItem(cardViewCopy)
                 if flyAwayBehavior.snapPhase {
-                    let deckFrameSize = bottomStackView.arrangedSubviews[0].frame.size
+//                    let deckFrameSize = bottomStackView.arrangedSubviews[0].frame.size
+                    var deckFrameSize = card.frame.size
+                    // temporary action for experimenting
+                    // if traits for view associated with animation are same before animation,
+                    // only completion block will be executed
+                    deckFrameSize.width *= 0.9
+                    deckFrameSize.height *= 0.9
                     cardViewCopy.frame.size = deckFrameSize
                 }
             } completion: { [unowned self] fin in
@@ -394,7 +386,7 @@ extension SetGameViewController {
     func updateScoreLabelUI() {
         guard let engine = engine else { return }
         
-        scoreLabel.text = "Set: \(engine.score)"
+        scoreLabel.text = "\(engine.score) Sets"
     }
     
     func updateRemainingDeckCardLabelUI() {
@@ -487,7 +479,6 @@ extension SetGameViewController {
         
         switch recognizer.state {
         case .ended:
-            numberOfTouchCard += 1
             engine?.touchCard(at: indexOfCardTapped)
             updateBoard()
             updateBoardUIWhenSet()
